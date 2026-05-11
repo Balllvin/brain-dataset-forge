@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=70", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "brain-dataset-forge"
+version = "0.1.0"
+description = "Local-first synthetic dataset generation, auditing, and iteration for fine-tuning workflows."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{ name = "Brain Dataset Forge contributors" }]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+hf = ["datasets>=3.0", "transformers>=4.45", "trl>=0.10", "accelerate>=0.34", "peft>=0.13", "evaluate>=0.4"]
+quality = ["datasketch>=1.6", "sentence-transformers>=3.0"]
+synthetic = ["distilabel>=1.5"]
+tinker = ["tinker-cookbook"]
+web = ["playwright>=1.45"]
+
+[project.scripts]
+dataset-forge = "dataset_forge.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"

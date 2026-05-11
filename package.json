@@ -1,0 +1,10 @@
+{
+  "name": "brain-dataset-forge-report-qa",
+  "private": true,
+  "scripts": {
+    "qa:report": "node scripts/report_qa.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.60.0"
+  }
+}
