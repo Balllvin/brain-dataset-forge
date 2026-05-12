@@ -2,108 +2,3504 @@
   "name": "chess assistant legality and explanation eval",
   "cases": [
     {
-      "id": "chess-assistant-0001",
+      "id": "chess-assistant-00001",
       "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "must_include": [
+        "e2e4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    },
+    {
+      "id": "chess-assistant-00011",
+      "fen": "rnbqkb1r/pp3ppp/2p2n2/3pp3/4P3/2N2N2/PPPP1PPP/R1BQKB1R w KQkq - 0 5",
+      "must_include": [
+        "f3e5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbqkb1r/pp3ppp/2p2n2/3pp3/4P3/2N2N2/PPPP1PPP/R1BQKB1R w KQkq - 0 5"
+    },
+    {
+      "id": "chess-assistant-00021",
+      "fen": "rnb1k1nr/1ppp1ppp/8/p1b5/8/1P4P1/P1PPPP2/R1BQKBN1 w Q - 0 9",
+      "must_include": [
+        "c1b2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnb1k1nr/1ppp1ppp/8/p1b5/8/1P4P1/P1PPPP2/R1BQKBN1 w Q - 0 9"
+    },
+    {
+      "id": "chess-assistant-00031",
+      "fen": "1nb4r/2p2k1p/4rp1n/3p2p1/2p5/Pp4P1/1B1PPK2/1R1Q1B2 b - - 3 22",
+      "must_include": [
+        "h8e8",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1nb4r/2p2k1p/4rp1n/3p2p1/2p5/Pp4P1/1B1PPK2/1R1Q1B2 b - - 3 22"
+    },
+    {
+      "id": "chess-assistant-00041",
+      "fen": "rnbqkb1r/1pppp1pp/8/p1Q5/3P2RP/5P2/PPP1P1P1/RNB1KBN1 w Q - 1 10",
+      "must_include": [
+        "c5c3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkb1r/1pppp1pp/8/p1Q5/3P2RP/5P2/PPP1P1P1/RNB1KBN1 w Q - 1 10"
+    },
+    {
+      "id": "chess-assistant-00051",
+      "fen": "1nb4B/1p1k3p/4p3/p7/1b5P/2P2P2/PP2r1P1/R3KBN1 w Q - 0 20",
+      "must_include": [
+        "g1e2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1nb4B/1p1k3p/4p3/p7/1b5P/2P2P2/PP2r1P1/R3KBN1 w Q - 0 20"
+    },
+    {
+      "id": "chess-assistant-00061",
+      "fen": "2b4B/2k1b3/4p1np/RP6/4B1P1/2P5/1P6/3K2N1 w - - 0 30",
+      "must_include": [
+        "e4g6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 2b4B/2k1b3/4p1np/RP6/4B1P1/2P5/1P6/3K2N1 w - - 0 30"
+    },
+    {
+      "id": "chess-assistant-00071",
+      "fen": "1nbqkbnr/2ppp2p/r5pQ/1p6/5p2/1PN1P2P/P1PP1PP1/R1B1K1NR b KQk - 1 7",
+      "must_include": [
+        "g8h6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1nbqkbnr/2ppp2p/r5pQ/1p6/5p2/1PN1P2P/P1PP1PP1/R1B1K1NR b KQk - 1 7"
+    },
+    {
+      "id": "chess-assistant-00081",
+      "fen": "1n2qknr/3pp2p/N5p1/R7/3P2P1/7r/2PK4/2B2qNR w - - 0 17",
+      "must_include": [
+        "a6c7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 1n2qknr/3pp2p/N5p1/R7/3P2P1/7r/2PK4/2B2qNR w - - 0 17"
+    },
+    {
+      "id": "chess-assistant-00091",
+      "fen": "r1bqkbnr/ppppppp1/B7/8/7p/4P3/PPPP1PPP/RNBQK1NR b KQkq - 0 4",
+      "must_include": [
+        "b7a6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r1bqkbnr/ppppppp1/B7/8/7p/4P3/PPPP1PPP/RNBQK1NR b KQkq - 0 4"
+    },
+    {
+      "id": "chess-assistant-00101",
+      "fen": "2r1k1n1/p1p2p2/1p1pp1p1/8/P7/P3P2P/2PP1P2/1NBQK3 b - - 0 13",
+      "must_include": [
+        "g8f6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 2r1k1n1/p1p2p2/1p1pp1p1/8/P7/P3P2P/2PP1P2/1NBQK3 b - - 0 13"
+    },
+    {
+      "id": "chess-assistant-00111",
+      "fen": "4k3/5p2/1p1p1np1/p2p4/P7/P3PP1P/8/1Nr1K3 w - - 4 24",
+      "must_include": [
+        "e1d2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 4k3/5p2/1p1p1np1/p2p4/P7/P3PP1P/8/1Nr1K3 w - - 4 24"
+    },
+    {
+      "id": "chess-assistant-00121",
+      "fen": "r1bqk1nr/pppp1ppp/2nbp3/8/P2P4/2P1P2P/5PP1/RNBQKBNR b KQkq - 0 6",
+      "must_include": [
+        "b7b6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1bqk1nr/pppp1ppp/2nbp3/8/P2P4/2P1P2P/5PP1/RNBQKBNR b KQkq - 0 6"
+    },
+    {
+      "id": "chess-assistant-00131",
+      "fen": "1rb1k2r/1pp2ppp/p3p3/P7/2p5/R3PP1P/3K1P2/1NB2BR1 w k - 0 18",
+      "must_include": [
+        "f1c4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1rb1k2r/1pp2ppp/p3p3/P7/2p5/R3PP1P/3K1P2/1NB2BR1 w k - 0 18"
+    },
+    {
+      "id": "chess-assistant-00141",
+      "fen": "rnbq1b2/3p1kp1/1p6/2p2p2/p4P2/4P3/PPPPK1P1/RNBQ2N1 w - - 0 12",
+      "must_include": [
+        "e2f1",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbq1b2/3p1kp1/1p6/2p2p2/p4P2/4P3/PPPPK1P1/RNBQ2N1 w - - 0 12"
+    },
+    {
+      "id": "chess-assistant-00151",
+      "fen": "rnb1kbnr/1p1pp1pp/p1p5/5B2/2P5/N5P1/Pq1PPP1P/R1BQK1NR w KQkq - 0 6",
+      "must_include": [
+        "c1b2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnb1kbnr/1p1pp1pp/p1p5/5B2/2P5/N5P1/Pq1PPP1P/R1BQK1NR w KQkq - 0 6"
+    },
+    {
+      "id": "chess-assistant-00161",
+      "fen": "1n3b1r/N3pkpp/pp3n2/2p5/2P1QP2/6P1/P2P1K1P/3R2NR b - - 0 16",
+      "must_include": [
+        "f6e4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 1n3b1r/N3pkpp/pp3n2/2p5/2P1QP2/6P1/P2P1K1P/3R2NR b - - 0 16"
+    },
+    {
+      "id": "chess-assistant-00171",
+      "fen": "5br1/n3p1pp/p4k2/2p3PP/P4P2/2K4N/8/2R4R b - - 0 28",
+      "must_include": [
+        "f6f5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 5br1/n3p1pp/p4k2/2p3PP/P4P2/2K4N/8/2R4R b - - 0 28"
+    },
+    {
+      "id": "chess-assistant-00181",
+      "fen": "2bqkb2/1p1pppp1/r2p1n2/p7/8/P2P1P1R/1PPPB3/R1BQK1N1 w Q - 1 12",
+      "must_include": [
+        "d3d4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 2bqkb2/1p1pppp1/r2p1n2/p7/8/P2P1P1R/1PPPB3/R1BQK1N1 w Q - 1 12"
+    },
+    {
+      "id": "chess-assistant-00191",
+      "fen": "2b1kb2/rp2ppp1/q7/2Bp3R/2Pp4/1QRP1P2/3PB3/4K1N1 b - - 1 22",
+      "must_include": [
+        "a6g6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 2b1kb2/rp2ppp1/q7/2Bp3R/2Pp4/1QRP1P2/3PB3/4K1N1 b - - 1 22"
+    },
+    {
+      "id": "chess-assistant-00201",
+      "fen": "r1b1k2r/p2p2p1/n1p2n1p/2b1pP2/7P/8/1PPPKP2/1NB1QR2 w kq - 1 13",
+      "must_include": [
+        "f1g1",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1b1k2r/p2p2p1/n1p2n1p/2b1pP2/7P/8/1PPPKP2/1NB1QR2 w kq - 1 13"
+    },
+    {
+      "id": "chess-assistant-00211",
+      "fen": "r1bq1bnr/pppppkpp/8/5P2/3n4/2PK4/PP1P1PPP/RNBQ1BNR b - - 4 5",
+      "must_include": [
+        "d4f5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r1bq1bnr/pppppkpp/8/5P2/3n4/2PK4/PP1P1PPP/RNBQ1BNR b - - 4 5"
+    },
+    {
+      "id": "chess-assistant-00221",
+      "fen": "2bq2nr/1ppp1k1p/r6b/p3Pp2/8/1P3PP1/P1QPK2P/RNB2BNR b - - 2 13",
+      "must_include": [
+        "g8e7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 2bq2nr/1ppp1k1p/r6b/p3Pp2/8/1P3PP1/P1QPK2P/RNB2BNR b - - 2 13"
+    },
+    {
+      "id": "chess-assistant-00231",
+      "fen": "8/1p1p1k1p/3p4/p7/8/NP1P1PP1/4BK2/1R4NR b - - 0 25",
+      "must_include": [
+        "f7f8",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 8/1p1p1k1p/3p4/p7/8/NP1P1PP1/4BK2/1R4NR b - - 0 25"
+    },
+    {
+      "id": "chess-assistant-00241",
+      "fen": "8/8/N2p4/4k3/p5P1/1P1P1P2/8/2R1KBN1 w - - 0 36",
+      "must_include": [
+        "b3a4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 8/8/N2p4/4k3/p5P1/1P1P1P2/8/2R1KBN1 w - - 0 36"
+    },
+    {
+      "id": "chess-assistant-00251",
+      "fen": "rnb1kbnr/1p1ppp1p/2p3p1/pN6/3P4/4P2P/PPP3P1/R1BQKBNR b KQkq - 1 6",
+      "must_include": [
+        "c6b5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnb1kbnr/1p1ppp1p/2p3p1/pN6/3P4/4P2P/PPP3P1/R1BQKBNR b KQkq - 1 6"
+    },
+    {
+      "id": "chess-assistant-00261",
+      "fen": "r1bqkbnr/pppp1ppp/2n1p3/8/8/P5P1/1PPPPP1P/RNBQKBNR w KQkq - 0 3",
+      "must_include": [
+        "f1g2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1bqkbnr/pppp1ppp/2n1p3/8/8/P5P1/1PPPPP1P/RNBQKBNR w KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-00271",
+      "fen": "r1bqkr2/1pppn1pp/7n/p7/1PPP4/P3P1P1/R6P/2B1KBNR b Kq - 0 12",
+      "must_include": [
+        "f8f1",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r1bqkr2/1pppn1pp/7n/p7/1PPP4/P3P1P1/R6P/2B1KBNR b Kq - 0 12"
+    },
+    {
+      "id": "chess-assistant-00281",
+      "fen": "3q1k2/1bp4p/3p3n/2Pn2p1/8/r3P1PP/2K1N3/7R b - - 1 22",
+      "must_include": [
+        "d5e3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 3q1k2/1bp4p/3p3n/2Pn2p1/8/r3P1PP/2K1N3/7R b - - 1 22"
+    },
+    {
+      "id": "chess-assistant-00291",
+      "fen": "rnbqkbnr/1pppp1p1/p6p/5p1P/1P3P2/8/P1PPP1P1/RNBQKBNR b KQkq - 0 4",
+      "must_include": [
+        "g8f6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbqkbnr/1pppp1p1/p6p/5p1P/1P3P2/8/P1PPP1P1/RNBQKBNR b KQkq - 0 4"
+    },
+    {
+      "id": "chess-assistant-00301",
+      "fen": "1n1q2nr/rbp1pk2/3p3p/Pp5P/3P1B2/N1P5/P3P1P1/R3KBNR b KQ - 0 13",
+      "must_include": [
+        "a7a5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 1n1q2nr/rbp1pk2/3p3p/Pp5P/3P1B2/N1P5/P3P1P1/R3KBNR b KQ - 0 13"
+    },
+    {
+      "id": "chess-assistant-00311",
+      "fen": "rnbqkbnr/p1pQppp1/1p6/7p/2P4P/8/PP1PPPP1/RNB1KBNR b KQkq - 0 4",
+      "must_include": [
+        "e8d7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbqkbnr/p1pQppp1/1p6/7p/2P4P/8/PP1PPPP1/RNB1KBNR b KQkq - 0 4"
+    },
+    {
+      "id": "chess-assistant-00321",
+      "fen": "rnbN1bnr/2pk3p/1p1pp3/p7/8/N1P5/PP1PPPPP/R1BQKB1R b KQ - 0 8",
+      "must_include": [
+        "a5a4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbN1bnr/2pk3p/1p1pp3/p7/8/N1P5/PP1PPPPP/R1BQKB1R b KQ - 0 8"
+    },
+    {
+      "id": "chess-assistant-00331",
+      "fen": "rn1qkbnr/1p2p1pp/B1pp4/5p2/P3P3/7b/1PPP1PP1/RNBQK1NR w KQkq - 0 6",
+      "must_include": [
+        "a6f1",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rn1qkbnr/1p2p1pp/B1pp4/5p2/P3P3/7b/1PPP1PP1/RNBQK1NR w KQkq - 0 6"
+    },
+    {
+      "id": "chess-assistant-00341",
+      "fen": "5bn1/4pk2/r2p2p1/q7/nP2B3/3P3N/2P1rPP1/2B1K2R w K - 0 18",
+      "must_include": [
+        "e1e2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 5bn1/4pk2/r2p2p1/q7/nP2B3/3P3N/2P1rPP1/2B1K2R w K - 0 18"
+    },
+    {
+      "id": "chess-assistant-00351",
+      "fen": "6n1/6b1/r3k1p1/3p2B1/1n2K3/2PP3R/5PP1/8 w - - 0 27",
+      "must_include": [
+        "e4f4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 6n1/6b1/r3k1p1/3p2B1/1n2K3/2PP3R/5PP1/8 w - - 0 27"
+    },
+    {
+      "id": "chess-assistant-00361",
+      "fen": "r1b1k1nr/p1p2ppp/np2p3/R2p4/1P1P1P1q/4P3/1PP1K1PP/1NBQ1BNR b kq - 1 7",
+      "must_include": [
+        "b6a5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1b1k1nr/p1p2ppp/np2p3/R2p4/1P1P1P1q/4P3/1PP1K1PP/1NBQ1BNR b kq - 1 7"
+    },
+    {
+      "id": "chess-assistant-00371",
+      "fen": "4k1nr/R1p2ppp/1p6/3KPp2/8/7P/1P4P1/1NB2nNR b - - 0 19",
+      "must_include": [
+        "g8e7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 4k1nr/R1p2ppp/1p6/3KPp2/8/7P/1P4P1/1NB2nNR b - - 0 19"
+    },
+    {
+      "id": "chess-assistant-00381",
+      "fen": "3r4/2k1np1R/8/1p2P1P1/5BP1/8/1PK5/1N4N1 b - - 2 29",
+      "must_include": [
+        "c7b6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 3r4/2k1np1R/8/1p2P1P1/5BP1/8/1PK5/1N4N1 b - - 2 29"
+    },
+    {
+      "id": "chess-assistant-00391",
+      "fen": "r1b1q3/1ppppk1r/p6B/5P2/8/2n5/PPPQ1PPP/1R2KB1R w K - 0 12",
+      "must_include": [
+        "b2c3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r1b1q3/1ppppk1r/p6B/5P2/8/2n5/PPPQ1PPP/1R2KB1R w K - 0 12"
+    },
+    {
+      "id": "chess-assistant-00401",
+      "fen": "8/1ppb1k2/8/5r2/5P1r/6P1/PPP5/4K2R w - - 0 24",
+      "must_include": [
+        "h1h4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 8/1ppb1k2/8/5r2/5P1r/6P1/PPP5/4K2R w - - 0 24"
+    },
+    {
+      "id": "chess-assistant-00411",
+      "fen": "rnbq1bn1/1p1kp1p1/1p3p1r/p2p4/5Pp1/8/PPPPP2P/1RBQKBNR w - - 0 9",
+      "must_include": [
+        "e2e3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbq1bn1/1p1kp1p1/1p3p1r/p2p4/5Pp1/8/PPPPP2P/1RBQKBNR w - - 0 9"
+    },
+    {
+      "id": "chess-assistant-00421",
+      "fen": "2bq1b2/4p1p1/pp2kp2/p2p4/P5p1/8/1PPP4/1RBKR3 b - - 3 19",
+      "must_include": [
+        "e6f7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 2bq1b2/4p1p1/pp2kp2/p2p4/P5p1/8/1PPP4/1RBKR3 b - - 3 19"
+    },
+    {
+      "id": "chess-assistant-00431",
+      "fen": "2b5/6B1/pp2p3/5k2/Pbp3p1/1R6/3P4/4K3 b - - 0 31",
+      "must_include": [
+        "c4b3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 2b5/6B1/pp2p3/5k2/Pbp3p1/1R6/3P4/4K3 b - - 0 31"
+    },
+    {
+      "id": "chess-assistant-00441",
+      "fen": "r1b1kb1r/p1pnpppp/5n2/1p6/4pP1P/PP6/2PBN1P1/RN1QKB1R b KQkq - 2 7",
+      "must_include": [
+        "e7e5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1b1kb1r/p1pnpppp/5n2/1p6/4pP1P/PP6/2PBN1P1/RN1QKB1R b KQkq - 2 7"
+    },
+    {
+      "id": "chess-assistant-00451",
+      "fen": "1rb5/2pk1p2/p7/4n2N/4p2P/bPP5/3B2PR/RN2K3 w Q - 0 18",
+      "must_include": [
+        "a1a3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1rb5/2pk1p2/p7/4n2N/4p2P/bPP5/3B2PR/RN2K3 w Q - 0 18"
+    },
+    {
+      "id": "chess-assistant-00461",
+      "fen": "rnbqkbn1/ppppp3/5p2/8/1P2P1p1/P7/2P5/RNBK1BNR b q - 1 10",
+      "must_include": [
+        "e7e6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkbn1/ppppp3/5p2/8/1P2P1p1/P7/2P5/RNBK1BNR b q - 1 10"
+    },
+    {
+      "id": "chess-assistant-00471",
+      "fen": "rnb5/4Bk2/2p2p2/8/1PB5/P1P2p2/8/R2K3R b - - 0 22",
+      "must_include": [
+        "c8e6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnb5/4Bk2/2p2p2/8/1PB5/P1P2p2/8/R2K3R b - - 0 22"
+    },
+    {
+      "id": "chess-assistant-00481",
+      "fen": "rn1q1bnr/1p1b1kpp/p1p1pp2/8/4P1P1/2P4P/P2P1P1R/RrB1K1N1 w - - 0 12",
+      "must_include": [
+        "a1b1",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rn1q1bnr/1p1b1kpp/p1p1pp2/8/4P1P1/2P4P/P2P1P1R/RrB1K1N1 w - - 0 12"
+    },
+    {
+      "id": "chess-assistant-00491",
+      "fen": "1n4nr/1p1b2pp/2p1p3/2q1p1k1/8/4P2P/P3KP1R/6N1 w - - 0 24",
+      "must_include": [
+        "g1f3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1n4nr/1p1b2pp/2p1p3/2q1p1k1/8/4P2P/P3KP1R/6N1 w - - 0 24"
+    },
+    {
+      "id": "chess-assistant-00501",
+      "fen": "rnb1kb1r/pp1ppp1p/2p3p1/8/2q5/1PP2PPN/P2P4/RNBQK2R w KQkq - 0 9",
+      "must_include": [
+        "b3c4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnb1kb1r/pp1ppp1p/2p3p1/8/2q5/1PP2PPN/P2P4/RNBQK2R w KQkq - 0 9"
+    },
+    {
+      "id": "chess-assistant-00511",
+      "fen": "rn1k4/p7/2p5/8/4P3/1bP3P1/P3K3/RNr5 w - - 0 21",
+      "must_include": [
+        "e2d2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rn1k4/p7/2p5/8/4P3/1bP3P1/P3K3/RNr5 w - - 0 21"
+    },
+    {
+      "id": "chess-assistant-00521",
+      "fen": "rn1qkb1r/ppp2pp1/3ppn2/7p/3P2P1/2N4P/PPP1bP2/R1BQKBNR b KQkq - 0 7",
+      "must_include": [
+        "e2d1",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rn1qkb1r/ppp2pp1/3ppn2/7p/3P2P1/2N4P/PPP1bP2/R1BQKBNR b KQkq - 0 7"
+    },
+    {
+      "id": "chess-assistant-00531",
+      "fen": "rn2kb2/1p1P4/p4pp1/8/1P4Pr/8/P1P1NP2/R1B1KBN1 b Qq - 0 17",
+      "must_include": [
+        "b8d7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rn2kb2/1p1P4/p4pp1/8/1P4Pr/8/P1P1NP2/R1B1KBN1 b Qq - 0 17"
+    },
+    {
+      "id": "chess-assistant-00541",
+      "fen": "1n6/4r1k1/6pb/1p4p1/1R4P1/1N3P2/P1P5/5K2 w - - 1 30",
+      "must_include": [
+        "b4b5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 1n6/4r1k1/6pb/1p4p1/1R4P1/1N3P2/P1P5/5K2 w - - 1 30"
+    },
+    {
+      "id": "chess-assistant-00551",
+      "fen": "1nb1kbnr/3p1p1p/1p4p1/8/7Q/3PP2N/1rq2PPP/R3KB1R b KQ - 1 12",
+      "must_include": [
+        "c2d2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1nb1kbnr/3p1p1p/1p4p1/8/7Q/3PP2N/1rq2PPP/R3KB1R b KQ - 1 12"
+    },
+    {
+      "id": "chess-assistant-00561",
+      "fen": "1nb1kb2/3pnp2/1p4p1/2r5/5P2/3PP3/3K2Pr/3BR2R w - - 0 21",
+      "must_include": [
+        "h1h2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 1nb1kb2/3pnp2/1p4p1/2r5/5P2/3PP3/3K2Pr/3BR2R w - - 0 21"
+    },
+    {
+      "id": "chess-assistant-00571",
+      "fen": "1n1k4/3b4/4n1p1/1p2P3/1b3P2/3P1B2/6P1/2K2R2 b - - 3 31",
+      "must_include": [
+        "e6d4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1n1k4/3b4/4n1p1/1p2P3/1b3P2/3P1B2/6P1/2K2R2 b - - 3 31"
+    },
+    {
+      "id": "chess-assistant-00581",
+      "fen": "1rbq1knr/3pp2p/p1n5/1p6/Pp6/3P4/2PQPPPP/RN2KB1R b KQ - 2 10",
+      "must_include": [
+        "d8c7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 1rbq1knr/3pp2p/p1n5/1p6/Pp6/3P4/2PQPPPP/RN2KB1R b KQ - 2 10"
+    },
+    {
+      "id": "chess-assistant-00591",
+      "fen": "2br3k/4p2p/3p4/8/5PnP/3PP3/2PKB1P1/6R1 w - - 5 24",
+      "must_include": [
+        "e3e4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 2br3k/4p2p/3p4/8/5PnP/3PP3/2PKB1P1/6R1 w - - 5 24"
+    },
+    {
+      "id": "chess-assistant-00601",
+      "fen": "r1bqkbnr/ppppp1pp/8/5p2/3n4/7P/PPP1PPP1/RNBQKBNR b KQkq - 1 4",
+      "must_include": [
+        "d4e6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1bqkbnr/ppppp1pp/8/5p2/3n4/7P/PPP1PPP1/RNBQKBNR b KQkq - 1 4"
+    },
+    {
+      "id": "chess-assistant-00611",
+      "fen": "4rb2/p1p1pkp1/1p5n/8/5P1p/4KN1P/PPP2P2/R6R w - - 0 18",
+      "must_include": [
+        "h1e1",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 4rb2/p1p1pkp1/1p5n/8/5P1p/4KN1P/PPP2P2/R6R w - - 0 18"
+    },
+    {
+      "id": "chess-assistant-00621",
+      "fen": "8/p3r3/1p4p1/4P3/PpP3kR/3K4/5P2/8 b - - 0 31",
+      "must_include": [
+        "g4h4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 8/p3r3/1p4p1/4P3/PpP3kR/3K4/5P2/8 b - - 0 31"
+    },
+    {
+      "id": "chess-assistant-00631",
+      "fen": "r1b1kbr1/p2ppppp/p1p5/1P3P1P/8/1P3Q2/2PPNPP1/R1B1K1NR w KQq - 1 12",
+      "must_include": [
+        "a1a4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r1b1kbr1/p2ppppp/p1p5/1P3P1P/8/1P3Q2/2PPNPP1/R1B1K1NR w KQq - 1 12"
+    },
+    {
+      "id": "chess-assistant-00641",
+      "fen": "rnbq2kr/1pppp3/4Npp1/Q6p/4P3/P3P1K1/1PP1P1PP/RNB2B1R w - - 0 12",
+      "must_include": [
+        "a5c7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbq2kr/1pppp3/4Npp1/Q6p/4P3/P3P1K1/1PP1P1PP/RNB2B1R w - - 0 12"
+    },
+    {
+      "id": "chess-assistant-00651",
+      "fen": "6kr/8/N4pp1/N2Pp2p/7P/2P1P3/1Pb1PKP1/R1B2B1R b - - 4 22",
+      "must_include": [
+        "g8g7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 6kr/8/N4pp1/N2Pp2p/7P/2P1P3/1Pb1PKP1/R1B2B1R b - - 4 22"
+    },
+    {
+      "id": "chess-assistant-00661",
+      "fen": "6k1/1r6/3P1pp1/7p/4p2P/2P1P2K/4P3/R1B2B1R b - - 1 31",
+      "must_include": [
+        "b7g7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 6k1/1r6/3P1pp1/7p/4p2P/2P1P2K/4P3/R1B2B1R b - - 1 31"
+    },
+    {
+      "id": "chess-assistant-00671",
+      "fen": "rnbq1b1r/p1pkpppR/1p1p4/8/8/1P2P2N/P1PP1P2/RNBQKB2 b Q - 2 7",
+      "must_include": [
+        "h8h7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbq1b1r/p1pkpppR/1p1p4/8/8/1P2P2N/P1PP1P2/RNBQKB2 b Q - 2 7"
+    },
+    {
+      "id": "chess-assistant-00681",
+      "fen": "r2q1b2/p1pkp1p1/np1B4/8/5N2/1P2P3/P1PPKP2/Rr6 w - - 1 17",
       "must_include": [
         "d2d4",
         "legal"
       ],
       "must_not_include": [
         "I cannot tell",
-        "any move is fine"
+        "any move is fine",
+        "illegal"
       ],
-      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+      "question": "What is the best move in this position, and why?\nFEN: r2q1b2/p1pkp1p1/np1B4/8/5N2/1P2P3/P1PPKP2/Rr6 w - - 1 17"
     },
     {
-      "id": "chess-assistant-0006",
-      "fen": "8/5pk1/6p1/8/4P3/5P2/5KPP/8 w - - 0 38",
+      "id": "chess-assistant-00691",
+      "fen": "rn2kbnr/p1p5/3p3B/3p1p2/3P4/P6P/1PP1PP2/R2QKBN1 b Qkq - 0 10",
       "must_include": [
-        "f2g3",
+        "f8e7",
         "legal"
       ],
       "must_not_include": [
         "I cannot tell",
-        "any move is fine"
+        "any move is fine",
+        "illegal"
       ],
-      "question": "What is the best move in this position, and why?\nFEN: 8/5pk1/6p1/8/4P3/5P2/5KPP/8 w - - 0 38"
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rn2kbnr/p1p5/3p3B/3p1p2/3P4/P6P/1PP1PP2/R2QKBN1 b Qkq - 0 10"
     },
     {
-      "id": "chess-assistant-0011",
-      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "id": "chess-assistant-00701",
+      "fen": "1nbqkbnr/4pp1p/1ppp2p1/8/2P2P2/r2P4/1P2P1PP/R1BQKBNR b KQk - 0 7",
+      "must_include": [
+        "a3a1",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 1nbqkbnr/4pp1p/1ppp2p1/8/2P2P2/r2P4/1P2P1PP/R1BQKBNR b KQk - 0 7"
+    },
+    {
+      "id": "chess-assistant-00711",
+      "fen": "1nb1kb2/2R1pp2/1ppp3r/6pp/2P1PP2/4P2P/1PK3P1/2B1QBNR b - - 0 17",
+      "must_include": [
+        "b8a6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1nb1kb2/2R1pp2/1ppp3r/6pp/2P1PP2/4P2P/1PK3P1/2B1QBNR b - - 0 17"
+    },
+    {
+      "id": "chess-assistant-00721",
+      "fen": "r2q1b1r/p1p1pkpp/1p1p3n/1B3p2/8/2N3P1/PPPPPP1P/R1BQK1NR b KQ - 3 7",
+      "must_include": [
+        "e7e6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r2q1b1r/p1p1pkpp/1p1p3n/1B3p2/8/2N3P1/PPPPPP1P/R1BQK1NR b KQ - 3 7"
+    },
+    {
+      "id": "chess-assistant-00731",
+      "fen": "2q2b1r/1B2p1pp/1p1p1k1n/p7/6P1/4Pp1P/PPPP1P2/1RBQK2R b K - 0 19",
+      "must_include": [
+        "c8b7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 2q2b1r/1B2p1pp/1p1p1k1n/p7/6P1/4Pp1P/PPPP1P2/1RBQK2R b K - 0 19"
+    },
+    {
+      "id": "chess-assistant-00741",
+      "fen": "8/4Qrbp/3p1k2/p5p1/6P1/4P2P/PPPPBP2/1RB1K1R1 b - - 0 28",
+      "must_include": [
+        "f6e7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 8/4Qrbp/3p1k2/p5p1/6P1/4P2P/PPPPBP2/1RB1K1R1 b - - 0 28"
+    },
+    {
+      "id": "chess-assistant-00751",
+      "fen": "rn1qk1nr/p1pppp1p/1p4p1/8/1P2P1P1/B2b4/P1PPNP1P/bN1Q1K1R b kq - 3 7",
+      "must_include": [
+        "d3e2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rn1qk1nr/p1pppp1p/1p4p1/8/1P2P1P1/B2b4/P1PPNP1P/bN1Q1K1R b kq - 3 7"
+    },
+    {
+      "id": "chess-assistant-00761",
+      "fen": "rnb1kbnr/pp1p1ppp/4p3/2p5/5P1R/8/PPPPP1P1/RNBQKBN1 b Qkq - 0 4",
+      "must_include": [
+        "f8e7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnb1kbnr/pp1p1ppp/4p3/2p5/5P1R/8/PPPPP1P1/RNBQKBN1 b Qkq - 0 4"
+    },
+    {
+      "id": "chess-assistant-00771",
+      "fen": "rnbqkbnr/1ppppp1p/8/p3N1p1/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 3",
       "must_include": [
         "d2d4",
         "legal"
       ],
       "must_not_include": [
         "I cannot tell",
-        "any move is fine"
+        "any move is fine",
+        "illegal"
       ],
-      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbqkbnr/1ppppp1p/8/p3N1p1/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 3"
     },
     {
-      "id": "chess-assistant-0016",
-      "fen": "8/5pk1/6p1/8/4P3/5P2/5KPP/8 w - - 0 38",
+      "id": "chess-assistant-00781",
+      "fen": "2r1kNnr/1p3p2/8/pPB4p/P7/3b4/4PPPP/RN2KB1R b KQk - 0 13",
       "must_include": [
-        "f2g3",
+        "d3f5",
         "legal"
       ],
       "must_not_include": [
         "I cannot tell",
-        "any move is fine"
+        "any move is fine",
+        "illegal"
       ],
-      "question": "What is the best move in this position, and why?\nFEN: 8/5pk1/6p1/8/4P3/5P2/5KPP/8 w - - 0 38"
+      "question": "What is the best move in this position, and why?\nFEN: 2r1kNnr/1p3p2/8/pPB4p/P7/3b4/4PPPP/RN2KB1R b KQk - 0 13"
     },
     {
-      "id": "chess-assistant-0021",
-      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "id": "chess-assistant-00791",
+      "fen": "r2qkbnr/p1ppppp1/n7/1B5p/4b3/NP3N2/P1PP1PPP/R1BQ1K1R b kq - 1 6",
+      "must_include": [
+        "e4b7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r2qkbnr/p1ppppp1/n7/1B5p/4b3/NP3N2/P1PP1PPP/R1BQ1K1R b kq - 1 6"
+    },
+    {
+      "id": "chess-assistant-00801",
+      "fen": "rnb1kbnr/Nppp1pR1/8/7p/8/8/PPPPPK1P/R1BQ1B2 b kq - 0 9",
+      "must_include": [
+        "f8g7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnb1kbnr/Nppp1pR1/8/7p/8/8/PPPPPK1P/R1BQ1B2 b kq - 0 9"
+    },
+    {
+      "id": "chess-assistant-00811",
+      "fen": "rn1qkb1r/3ppp2/p5pp/2p5/4n1P1/1PP2N2/P2P3P/RNB1KB1R w KQkq - 0 9",
+      "must_include": [
+        "f1g2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rn1qkb1r/3ppp2/p5pp/2p5/4n1P1/1PP2N2/P2P3P/RNB1KB1R w KQkq - 0 9"
+    },
+    {
+      "id": "chess-assistant-00821",
+      "fen": "rn1qk3/3pp3/3R4/1p6/8/2P5/4K3/2R5 b q - 0 21",
+      "must_include": [
+        "a8a2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rn1qk3/3pp3/3R4/1p6/8/2P5/4K3/2R5 b q - 0 21"
+    },
+    {
+      "id": "chess-assistant-00831",
+      "fen": "r1b1kbnr/ppp2pp1/n2p3p/4p3/1P1P4/2N2P2/P1P1PKPP/R1BQ1B1R b kq - 0 7",
+      "must_include": [
+        "a6b4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r1b1kbnr/ppp2pp1/n2p3p/4p3/1P1P4/2N2P2/P1P1PKPP/R1BQ1B1R b kq - 0 7"
+    },
+    {
+      "id": "chess-assistant-00841",
+      "fen": "r5nr/p1Qb1k2/3p1p1b/6p1/4P3/2pP1PK1/P5PP/R4B1R b - - 0 16",
+      "must_include": [
+        "h6g7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r5nr/p1Qb1k2/3p1p1b/6p1/4P3/2pP1PK1/P5PP/R4B1R b - - 0 16"
+    },
+    {
+      "id": "chess-assistant-00851",
+      "fen": "1r3knR/p7/8/6b1/8/PBpP1P2/6K1/R7 w - - 3 30",
+      "must_include": [
+        "h8g8",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1r3knR/p7/8/6b1/8/PBpP1P2/6K1/R7 w - - 3 30"
+    },
+    {
+      "id": "chess-assistant-00861",
+      "fen": "rnbqk1nr/ppppp1b1/7p/8/P7/2P5/1P1PBPPP/RNBQK1NR b KQ - 0 7",
+      "must_include": [
+        "e7e5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqk1nr/ppppp1b1/7p/8/P7/2P5/1P1PBPPP/RNBQK1NR b KQ - 0 7"
+    },
+    {
+      "id": "chess-assistant-00871",
+      "fen": "rnbqkbnr/pp1pppp1/7p/8/2pP3P/5P1N/PPP1P1P1/RNBQKB1R b KQkq d3 0 4",
+      "must_include": [
+        "c4d3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbqkbnr/pp1pppp1/7p/8/2pP3P/5P1N/PPP1P1P1/RNBQKB1R b KQkq d3 0 4"
+    },
+    {
+      "id": "chess-assistant-00881",
+      "fen": "r1bqkbnr/pppppp2/n7/6p1/2Q1P1p1/2P5/PP1P1P1P/RNB1KBNR b KQkq - 1 5",
+      "must_include": [
+        "c7c6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1bqkbnr/pppppp2/n7/6p1/2Q1P1p1/2P5/PP1P1P1P/RNB1KBNR b KQkq - 1 5"
+    },
+    {
+      "id": "chess-assistant-00891",
+      "fen": "r1b1k2N/p2p4/p1n1p2b/4P3/4q1p1/2P5/PP1P1P1P/RNB2K1R b q - 0 13",
+      "must_include": [
+        "e4h1",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r1b1k2N/p2p4/p1n1p2b/4P3/4q1p1/2P5/PP1P1P1P/RNB2K1R b q - 0 13"
+    },
+    {
+      "id": "chess-assistant-00901",
+      "fen": "rnbqkbnr/1ppppp1p/8/p5p1/1P6/P7/2PPPPPP/RNBQKBNR w KQkq - 0 3",
+      "must_include": [
+        "c1b2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/1ppppp1p/8/p5p1/1P6/P7/2PPPPPP/RNBQKBNR w KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-00911",
+      "fen": "rnbqkb1r/pp1ppppp/2p5/8/6n1/N7/PPPPPPBP/R1BQK1NR w KQkq - 0 4",
+      "must_include": [
+        "h2h3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbqkb1r/pp1ppppp/2p5/8/6n1/N7/PPPPPPBP/R1BQK1NR w KQkq - 0 4"
+    },
+    {
+      "id": "chess-assistant-00921",
+      "fen": "rn5r/p2p1k1p/2p5/5pp1/1B1N4/N7/P1P1K2P/3R3R b - - 2 16",
+      "must_include": [
+        "b8a6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rn5r/p2p1k1p/2p5/5pp1/1B1N4/N7/P1P1K2P/3R3R b - - 2 16"
+    },
+    {
+      "id": "chess-assistant-00931",
+      "fen": "r1bk1bnr/pp1ppppp/n7/1P2q3/2p3P1/P1P2N2/3PPP1P/RNBQKB1R w KQ - 5 9",
+      "must_include": [
+        "f3e5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r1bk1bnr/pp1ppppp/n7/1P2q3/2p3P1/P1P2N2/3PPP1P/RNBQKB1R w KQ - 5 9"
+    },
+    {
+      "id": "chess-assistant-00941",
+      "fen": "r2k1bnr/5pp1/4p3/pp1p2Pp/8/P1P2K2/1B1P1P1P/RN1R4 w - - 0 21",
+      "must_include": [
+        "a3a4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r2k1bnr/5pp1/4p3/pp1p2Pp/8/P1P2K2/1B1P1P1P/RN1R4 w - - 0 21"
+    },
+    {
+      "id": "chess-assistant-00951",
+      "fen": "7r/5np1/4pBp1/3p1k1p/2P5/4r3/3PKP1P/1R6 w - - 4 32",
+      "must_include": [
+        "f2e3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 7r/5np1/4pBp1/3p1k1p/2P5/4r3/3PKP1P/1R6 w - - 4 32"
+    },
+    {
+      "id": "chess-assistant-00961",
+      "fen": "rnbqkb1r/2pppppp/1P6/p7/7P/8/PP1PPn2/RNBQKBNR w KQkq - 0 6",
+      "must_include": [
+        "e1f2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkb1r/2pppppp/1P6/p7/7P/8/PP1PPn2/RNBQKBNR w KQkq - 0 6"
+    },
+    {
+      "id": "chess-assistant-00971",
+      "fen": "4kb1r/3p2p1/5p2/p2n3p/7P/1PN2N2/3P4/R1B2BKR w k - 0 18",
+      "must_include": [
+        "c3d5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 4kb1r/3p2p1/5p2/p2n3p/7P/1PN2N2/3P4/R1B2BKR w k - 0 18"
+    },
+    {
+      "id": "chess-assistant-00981",
+      "fen": "4k1r1/3p4/5p2/6pR/7P/1P4K1/3P2BR/2B5 b - - 1 28",
+      "must_include": [
+        "f6f5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 4k1r1/3p4/5p2/6pR/7P/1P4K1/3P2BR/2B5 b - - 1 28"
+    },
+    {
+      "id": "chess-assistant-00991",
+      "fen": "rnbq1b1r/pp1pkppp/8/2p1p2n/P7/3P4/1PPQPPPP/RNB1KBNR w KQ - 2 6",
+      "must_include": [
+        "d2g5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbq1b1r/pp1pkppp/8/2p1p2n/P7/3P4/1PPQPPPP/RNB1KBNR w KQ - 2 6"
+    },
+    {
+      "id": "chess-assistant-01001",
+      "fen": "rn5r/4kppp/pp1p4/5q1n/P2B3P/P5P1/2P1PP2/R3KBNR b KQ - 0 16",
+      "must_include": [
+        "f5a5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rn5r/4kppp/pp1p4/5q1n/P2B3P/P5P1/2P1PP2/R3KBNR b KQ - 0 16"
+    },
+    {
+      "id": "chess-assistant-01011",
+      "fen": "rnbqkbnr/2pppppp/1p6/p7/2P5/8/PPQPPPPP/RNBK1BNR b kq - 1 4",
+      "must_include": [
+        "e7e5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbqkbnr/2pppppp/1p6/p7/2P5/8/PPQPPPPP/RNBK1BNR b kq - 1 4"
+    },
+    {
+      "id": "chess-assistant-01021",
+      "fen": "r1bqkb1r/3p3p/1p4p1/3pp3/R2N4/2KP2PP/1P2PP2/1NB2B1R b kq - 0 15",
+      "must_include": [
+        "e5d4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1bqkb1r/3p3p/1p4p1/3pp3/R2N4/2KP2PP/1P2PP2/1NB2B1R b kq - 0 15"
+    },
+    {
+      "id": "chess-assistant-01031",
+      "fen": "2b1k2r/2Kp3p/1p4p1/8/8/3r2PP/5P2/1R6 b k - 1 25",
+      "must_include": [
+        "d3c3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 2b1k2r/2Kp3p/1p4p1/8/8/3r2PP/5P2/1R6 b k - 1 25"
+    },
+    {
+      "id": "chess-assistant-01041",
+      "fen": "r1b1k2r/pp1n3p/2pb4/8/5P2/6pP/PPPPP1B1/RNBQK2R b KQkq - 1 13",
+      "must_include": [
+        "d6f4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1b1k2r/pp1n3p/2pb4/8/5P2/6pP/PPPPP1B1/RNBQK2R b KQkq - 1 13"
+    },
+    {
+      "id": "chess-assistant-01051",
+      "fen": "r3k3/pp5p/8/B7/2b5/7P/PP5K/1N3r2 b q - 1 25",
+      "must_include": [
+        "c4e6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r3k3/pp5p/8/B7/2b5/7P/PP5K/1N3r2 b q - 1 25"
+    },
+    {
+      "id": "chess-assistant-01061",
+      "fen": "rnb1k2r/p1pp4/1p3Q2/7p/8/1P1P1N2/P1P1PKPP/RN3B1R w - - 1 12",
+      "must_include": [
+        "f6e5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnb1k2r/p1pp4/1p3Q2/7p/8/1P1P1N2/P1P1PKPP/RN3B1R w - - 1 12"
+    },
+    {
+      "id": "chess-assistant-01071",
+      "fen": "r7/p1P3k1/1p1n4/4N2p/3P4/1P5b/P2N1KPP/R4R2 w - - 3 24",
+      "must_include": [
+        "e5f3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r7/p1P3k1/1p1n4/4N2p/3P4/1P5b/P2N1KPP/R4R2 w - - 3 24"
+    },
+    {
+      "id": "chess-assistant-01081",
+      "fen": "r1bqkbnr/ppppp1pp/n4p2/8/P7/6P1/1PPPPP1P/RNBQKBNR w KQkq - 1 3",
+      "must_include": [
+        "c2c3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1bqkbnr/ppppp1pp/n4p2/8/P7/6P1/1PPPPP1P/RNBQKBNR w KQkq - 1 3"
+    },
+    {
+      "id": "chess-assistant-01091",
+      "fen": "2bq2nr/p1pB2p1/6k1/5p1p/P4P2/b5PP/1PPPP3/RNBQK1NR w KQ - 1 12",
+      "must_include": [
+        "g1f3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 2bq2nr/p1pB2p1/6k1/5p1p/P4P2/b5PP/1PPPP3/RNBQK1NR w KQ - 1 12"
+    },
+    {
+      "id": "chess-assistant-01101",
+      "fen": "r1b1kb1r/p4ppp/p4n2/6P1/4p1P1/8/P2P3P/RNB1K2R b KQkq - 0 11",
+      "must_include": [
+        "f6d5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1b1kb1r/p4ppp/p4n2/6P1/4p1P1/8/P2P3P/RNB1K2R b KQkq - 0 11"
+    },
+    {
+      "id": "chess-assistant-01111",
+      "fen": "7r/p4kpp/p7/5pP1/2r5/R2p1K2/8/1N6 w - - 3 22",
+      "must_include": [
+        "a3a6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 7r/p4kpp/p7/5pP1/2r5/R2p1K2/8/1N6 w - - 3 22"
+    },
+    {
+      "id": "chess-assistant-01121",
+      "fen": "r1bqk1nr/pppp2pp/2n1p3/5p2/P7/bP3P1N/2PPP1PP/1NBQKB1R w Kkq - 0 6",
+      "must_include": [
+        "b1a3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1bqk1nr/pppp2pp/2n1p3/5p2/P7/bP3P1N/2PPP1PP/1NBQKB1R w Kkq - 0 6"
+    },
+    {
+      "id": "chess-assistant-01131",
+      "fen": "2bqk1nr/1pp3pp/2n1p3/5p2/r7/1P1BPP2/2PP2PP/1NQ1K2R w K - 0 15",
+      "must_include": [
+        "b3a4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 2bqk1nr/1pp3pp/2n1p3/5p2/r7/1P1BPP2/2PP2PP/1NQ1K2R w K - 0 15"
+    },
+    {
+      "id": "chess-assistant-01141",
+      "fen": "rnbqkbnr/1pppppp1/7p/p7/8/P6N/1PPPPPPP/RNBQKB1R w KQkq - 0 3",
+      "must_include": [
+        "e2e4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/1pppppp1/7p/p7/8/P6N/1PPPPPPP/RNBQKB1R w KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-01151",
+      "fen": "1nbqkb2/2pp2p1/2p4n/p3pp2/5P2/P5PN/1PP2K1P/RNQ2BR1 b - - 1 13",
+      "must_include": [
+        "h6g4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1nbqkb2/2pp2p1/2p4n/p3pp2/5P2/P5PN/1PP2K1P/RNQ2BR1 b - - 1 13"
+    },
+    {
+      "id": "chess-assistant-01161",
+      "fen": "4k1n1/2p3p1/8/p3P3/8/P1P2KPq/7P/RN3b2 w - - 0 26",
+      "must_include": [
+        "b1d2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 4k1n1/2p3p1/8/p3P3/8/P1P2KPq/7P/RN3b2 w - - 0 26"
+    },
+    {
+      "id": "chess-assistant-01171",
+      "fen": "1k4n1/8/8/p1p1P3/P4pP1/2PK4/2N5/8 w - - 0 36",
+      "must_include": [
+        "d3e4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1k4n1/8/8/p1p1P3/P4pP1/2PK4/2N5/8 w - - 0 36"
+    },
+    {
+      "id": "chess-assistant-01181",
+      "fen": "r3kbnr/p4p1p/1p1p1np1/3pp3/P1P5/6PR/1P1PPq2/RNBK1BN1 w kq - 0 12",
+      "must_include": [
+        "d2d3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r3kbnr/p4p1p/1p1p1np1/3pp3/P1P5/6PR/1P1PPq2/RNBK1BN1 w kq - 0 12"
+    },
+    {
+      "id": "chess-assistant-01191",
+      "fen": "6nr/4n3/pp1p1kp1/8/PP6/5BP1/3KP3/RN4N1 w - - 0 23",
+      "must_include": [
+        "b1c3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 6nr/4n3/pp1p1kp1/8/PP6/5BP1/3KP3/RN4N1 w - - 0 23"
+    },
+    {
+      "id": "chess-assistant-01201",
+      "fen": "rnbqkbnr/2pppppp/p7/1p6/8/1P5N/P1PPPPPP/RNBQKB1R w KQkq - 0 3",
+      "must_include": [
+        "c2c4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/2pppppp/p7/1p6/8/1P5N/P1PPPPPP/RNBQKB1R w KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-01211",
+      "fen": "r2qkr2/2pb3p/p1npN3/1p3p2/8/1P4PB/P1PPPR1P/RN1QK3 w Q - 1 14",
+      "must_include": [
+        "e6d8",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r2qkr2/2pb3p/p1npN3/1p3p2/8/1P4PB/P1PPPR1P/RN1QK3 w Q - 1 14"
+    },
+    {
+      "id": "chess-assistant-01221",
+      "fen": "r1bqkbnr/pp1npppp/2pp4/8/6P1/5P1P/PPPPP3/RNBQKBNR b KQkq - 0 4",
+      "must_include": [
+        "e7e5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1bqkbnr/pp1npppp/2pp4/8/6P1/5P1P/PPPPP3/RNBQKBNR b KQkq - 0 4"
+    },
+    {
+      "id": "chess-assistant-01231",
+      "fen": "r1b1k1nr/pp2pp2/2pp3b/2n3pp/3P2PP/5P1N/P1PKP3/R1B2B1R b kq - 4 13",
+      "must_include": [
+        "h5g4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r1b1k1nr/pp2pp2/2pp3b/2n3pp/3P2PP/5P1N/P1PKP3/R1B2B1R b kq - 4 13"
+    },
+    {
+      "id": "chess-assistant-01241",
+      "fen": "r4knr/1p2pp2/2p1b3/p1K4p/P2P3p/5P2/2P1P3/R4n2 w - - 0 24",
+      "must_include": [
+        "f3f4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r4knr/1p2pp2/2p1b3/p1K4p/P2P3p/5P2/2P1P3/R4n2 w - - 0 24"
+    },
+    {
+      "id": "chess-assistant-01251",
+      "fen": "rnbqkbnr/pp1pp1pp/5p2/2p5/6P1/7P/PPPPPP2/RNBQKBNR w KQkq - 0 3",
+      "must_include": [
+        "f1g2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbqkbnr/pp1pp1pp/5p2/2p5/6P1/7P/PPPPPP2/RNBQKBNR w KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-01261",
+      "fen": "r1b2b2/p2k4/2pp2pr/2p1p3/1R6/1P6/P1PPPP2/RNBQK1N1 b Q - 0 13",
+      "must_include": [
+        "c5b4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1b2b2/p2k4/2pp2pr/2p1p3/1R6/1P6/P1PPPP2/RNBQK1N1 b Q - 0 13"
+    },
+    {
+      "id": "chess-assistant-01271",
+      "fen": "rnbqk2r/1p1p1p1p/p1p1pnp1/8/P3PP2/P6N/1BPPK1PP/RN1Q1B1R b kq - 2 7",
+      "must_include": [
+        "d7d5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbqk2r/1p1p1p1p/p1p1pnp1/8/P3PP2/P6N/1BPPK1PP/RN1Q1B1R b kq - 2 7"
+    },
+    {
+      "id": "chess-assistant-01281",
+      "fen": "r1bqkbnr/ppppppp1/n6p/8/3P4/N2Q4/PPP1PPPP/R1B1KBNR b KQkq - 1 3",
+      "must_include": [
+        "e7e5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1bqkbnr/ppppppp1/n6p/8/3P4/N2Q4/PPP1PPPP/R1B1KBNR b KQkq - 1 3"
+    },
+    {
+      "id": "chess-assistant-01291",
+      "fen": "r2k3r/ppp2pp1/n6p/4n3/6B1/2b5/P3PP1P/5KNR w - - 0 15",
+      "must_include": [
+        "g4f5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r2k3r/ppp2pp1/n6p/4n3/6B1/2b5/P3PP1P/5KNR w - - 0 15"
+    },
+    {
+      "id": "chess-assistant-01301",
+      "fen": "r2k4/pp3ppB/7p/n1p5/5b2/7P/P3P1R1/4K1N1 b - - 2 24",
+      "must_include": [
+        "f4e5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r2k4/pp3ppB/7p/n1p5/5b2/7P/P3P1R1/4K1N1 b - - 2 24"
+    },
+    {
+      "id": "chess-assistant-01311",
+      "fen": "rnbk1bn1/pp1ppp2/1Np5/8/4P1r1/8/PPPP2PP/R1BK1R2 b - - 1 10",
+      "must_include": [
+        "g4g2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbk1bn1/pp1ppp2/1Np5/8/4P1r1/8/PPPP2PP/R1BK1R2 b - - 1 10"
+    },
+    {
+      "id": "chess-assistant-01321",
+      "fen": "rnb1k1nr/ppq2ppp/4p3/2b5/8/4P2P/PPPP1PP1/R1BQKBNR w KQkq - 0 6",
+      "must_include": [
+        "g1f3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnb1k1nr/ppq2ppp/4p3/2b5/8/4P2P/PPPP1PP1/R1BQKBNR w KQkq - 0 6"
+    },
+    {
+      "id": "chess-assistant-01331",
+      "fen": "rn1qkbnr/ppp1pp1p/3p2p1/8/5Pb1/P7/RPPPP2P/1NBQKBNR b Kkq - 1 4",
+      "must_include": [
+        "e7e5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rn1qkbnr/ppp1pp1p/3p2p1/8/5Pb1/P7/RPPPP2P/1NBQKBNR b Kkq - 1 4"
+    },
+    {
+      "id": "chess-assistant-01341",
+      "fen": "r1bqkbnr/pp1pppp1/7p/2p5/P4P1P/3n4/2P1P1P1/RNBQKBNR w KQkq - 0 6",
+      "must_include": [
+        "c2d3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1bqkbnr/pp1pppp1/7p/2p5/P4P1P/3n4/2P1P1P1/RNBQKBNR w KQkq - 0 6"
+    },
+    {
+      "id": "chess-assistant-01351",
+      "fen": "1nbqkbnr/rpppp1pp/p7/5p2/4PP2/3PB3/PPP3PP/RN1QKBNR b KQk - 1 4",
+      "must_include": [
+        "c7c5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1nbqkbnr/rpppp1pp/p7/5p2/4PP2/3PB3/PPP3PP/RN1QKBNR b KQk - 1 4"
+    },
+    {
+      "id": "chess-assistant-01361",
+      "fen": "rnbqk1nr/ppppppbp/6p1/8/3P4/2N4P/PPP1PPP1/R1BQKBNR b KQkq - 2 3",
+      "must_include": [
+        "d7d5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqk1nr/ppppppbp/6p1/8/3P4/2N4P/PPP1PPP1/R1BQKBNR b KQkq - 2 3"
+    },
+    {
+      "id": "chess-assistant-01371",
+      "fen": "r5nr/p2kpp1p/1pp5/6p1/P7/R1P3qb/2P1PP2/2B1KBNR w K - 0 15",
+      "must_include": [
+        "f1h3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r5nr/p2kpp1p/1pp5/6p1/P7/R1P3qb/2P1PP2/2B1KBNR w K - 0 15"
+    },
+    {
+      "id": "chess-assistant-01381",
+      "fen": "rnbqkbnr/pppppp2/6pp/8/8/2P4N/PP1PPPPP/RNBQKB1R w KQkq - 0 3",
+      "must_include": [
+        "h3g1",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/pppppp2/6pp/8/8/2P4N/PP1PPPPP/RNBQKB1R w KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-01391",
+      "fen": "r3k2r/pp2p1b1/n1p2ppn/1B6/4P3/PPP4b/5PPP/RK5R w q - 1 14",
+      "must_include": [
+        "b5a6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r3k2r/pp2p1b1/n1p2ppn/1B6/4P3/PPP4b/5PPP/RK5R w q - 1 14"
+    },
+    {
+      "id": "chess-assistant-01401",
+      "fen": "1rbqkbnr/pppppppp/8/8/3n2P1/2N4P/PPPPPP2/1RBQKBNR b Kk - 0 4",
+      "must_include": [
+        "e7e5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 1rbqkbnr/pppppppp/8/8/3n2P1/2N4P/PPPPPP2/1RBQKBNR b Kk - 0 4"
+    },
+    {
+      "id": "chess-assistant-01411",
+      "fen": "r1b1kb1r/pp1pnp2/3p2p1/4p3/1q4P1/1P1P3P/P2BP3/1R2KBNR w Kk - 2 16",
+      "must_include": [
+        "d2b4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r1b1kb1r/pp1pnp2/3p2p1/4p3/1q4P1/1P1P3P/P2BP3/1R2KBNR w Kk - 2 16"
+    },
+    {
+      "id": "chess-assistant-01421",
+      "fen": "2bqkbnr/rppppp1p/n5p1/7Q/4P2P/2N5/PPPP1PP1/R1B1K1NR b KQk - 1 5",
+      "must_include": [
+        "g6h5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 2bqkbnr/rppppp1p/n5p1/7Q/4P2P/2N5/PPPP1PP1/R1B1K1NR b KQk - 1 5"
+    },
+    {
+      "id": "chess-assistant-01431",
+      "fen": "r1bqkbnr/p1ppp1pp/1pn5/5p2/P7/7N/1PPPPPPP/RNBQKBR1 b Qkq - 0 4",
+      "must_include": [
+        "e7e5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r1bqkbnr/p1ppp1pp/1pn5/5p2/P7/7N/1PPPPPPP/RNBQKBR1 b Qkq - 0 4"
+    },
+    {
+      "id": "chess-assistant-01441",
+      "fen": "r1b1kbnr/4p1pp/2p5/1q1p1p2/5P2/N5PN/1P1PPR1P/2BQKB2 w k - 2 15",
+      "must_include": [
+        "a3b5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1b1kbnr/4p1pp/2p5/1q1p1p2/5P2/N5PN/1P1PPR1P/2BQKB2 w k - 2 15"
+    },
+    {
+      "id": "chess-assistant-01451",
+      "fen": "5br1/4p1pk/8/1p3p2/3PPPn1/7P/1P4R1/r1BQ1K2 w - - 0 27",
+      "must_include": [
+        "d1e1",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 5br1/4p1pk/8/1p3p2/3PPPn1/7P/1P4R1/r1BQ1K2 w - - 0 27"
+    },
+    {
+      "id": "chess-assistant-01461",
+      "fen": "rnbqkbnr/p1ppppp1/1p6/7p/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3",
+      "must_include": [
+        "b1c3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/p1ppppp1/1p6/7p/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-01471",
+      "fen": "r1bqkbnr/ppp1pppp/2P5/3p4/8/8/P1PPPPPP/RNBQKBNR b KQkq - 0 3",
+      "must_include": [
+        "b7c6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r1bqkbnr/ppp1pppp/2P5/3p4/8/8/P1PPPPPP/RNBQKBNR b KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-01481",
+      "fen": "3qkb2/2p1pppr/p1p4n/3p4/P7/2P1PNP1/3P1P2/2RQ1K2 w - - 0 15",
+      "must_include": [
+        "f3e5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 3qkb2/2p1pppr/p1p4n/3p4/P7/2P1PNP1/3P1P2/2RQ1K2 w - - 0 15"
+    },
+    {
+      "id": "chess-assistant-01491",
+      "fen": "5bn1/2p1kpp1/p1p5/4p3/4r3/4P1P1/6K1/1R1Q4 w - - 2 27",
+      "must_include": [
+        "b1b7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 5bn1/2p1kpp1/p1p5/4p3/4r3/4P1P1/6K1/1R1Q4 w - - 2 27"
+    },
+    {
+      "id": "chess-assistant-01501",
+      "fen": "r1bqkbnr/ppppp1pp/n4p2/8/1P6/2P5/P2PPPPP/RNBQKBNR w KQkq - 0 3",
       "must_include": [
         "d2d4",
         "legal"
       ],
       "must_not_include": [
         "I cannot tell",
-        "any move is fine"
+        "any move is fine",
+        "illegal"
       ],
-      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+      "question": "What is the best move in this position, and why?\nFEN: r1bqkbnr/ppppp1pp/n4p2/8/1P6/2P5/P2PPPPP/RNBQKBNR w KQkq - 0 3"
     },
     {
-      "id": "chess-assistant-0026",
-      "fen": "8/5pk1/6p1/8/4P3/5P2/5KPP/8 w - - 0 38",
+      "id": "chess-assistant-01511",
+      "fen": "2bqkb1r/1pp3pp/3p1p2/8/4P1n1/2N5/3Q1PPP/R3KBNR w KQk - 1 13",
       "must_include": [
-        "f2g3",
+        "g1f3",
         "legal"
       ],
       "must_not_include": [
         "I cannot tell",
-        "any move is fine"
+        "any move is fine",
+        "illegal"
       ],
-      "question": "What is the best move in this position, and why?\nFEN: 8/5pk1/6p1/8/4P3/5P2/5KPP/8 w - - 0 38"
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 2bqkb1r/1pp3pp/3p1p2/8/4P1n1/2N5/3Q1PPP/R3KBNR w KQk - 1 13"
     },
     {
-      "id": "chess-assistant-0031",
-      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "id": "chess-assistant-01521",
+      "fen": "rnbqkbnr/1ppppp1p/p7/6p1/3P4/2N5/PPP1PPPP/R1BQKBNR w KQkq - 0 3",
+      "must_include": [
+        "c1g5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/1ppppp1p/p7/6p1/3P4/2N5/PPP1PPPP/R1BQKBNR w KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-01531",
+      "fen": "rN4nr/3p1p1p/8/1Q1bp3/6k1/b3P1P1/1PPK1P1P/R4BNR b - - 0 14",
+      "must_include": [
+        "g8f6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rN4nr/3p1p1p/8/1Q1bp3/6k1/b3P1P1/1PPK1P1P/R4BNR b - - 0 14"
+    },
+    {
+      "id": "chess-assistant-01541",
+      "fen": "1nbq1br1/1ppp1k1p/r5pn/p3pB2/8/1PN1PQ1N/P1PP1PPP/R1B1K2R w KQ - 3 10",
+      "must_include": [
+        "f5d3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 1nbq1br1/1ppp1k1p/r5pn/p3pB2/8/1PN1PQ1N/P1PP1PPP/R1B1K2R w KQ - 3 10"
+    },
+    {
+      "id": "chess-assistant-01551",
+      "fen": "1n3qr1/1r1b3p/1N4pn/p3pk2/5N2/1P2P3/P1PP1PPP/R3K1R1 b Q - 1 19",
+      "must_include": [
+        "f8e8",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1n3qr1/1r1b3p/1N4pn/p3pk2/5N2/1P2P3/P1PP1PPP/R3K1R1 b Q - 1 19"
+    },
+    {
+      "id": "chess-assistant-01561",
+      "fen": "Nn6/1r1b2q1/7R/p7/2P1pk2/1P6/P2P1PnP/R2K4 w - - 1 28",
+      "must_include": [
+        "h6h4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: Nn6/1r1b2q1/7R/p7/2P1pk2/1P6/P2P1PnP/R2K4 w - - 1 28"
+    },
+    {
+      "id": "chess-assistant-01571",
+      "fen": "rnbqkbnr/ppppp1B1/7p/5p2/8/1P6/P1PPPPPP/RN1QKBNR b KQkq - 0 3",
+      "must_include": [
+        "f8g7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbqkbnr/ppppp1B1/7p/5p2/8/1P6/P1PPPPPP/RN1QKBNR b KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-01581",
+      "fen": "rnbqkb1r/p1ppp1pp/5p1n/1p6/5N2/P7/1PPPPPPP/RNBQKB1R w KQkq - 2 4",
       "must_include": [
         "d2d4",
         "legal"
       ],
       "must_not_include": [
         "I cannot tell",
-        "any move is fine"
+        "any move is fine",
+        "illegal"
       ],
-      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkb1r/p1ppp1pp/5p1n/1p6/5N2/P7/1PPPPPPP/RNBQKB1R w KQkq - 2 4"
     },
     {
-      "id": "chess-assistant-0036",
-      "fen": "8/5pk1/6p1/8/4P3/5P2/5KPP/8 w - - 0 38",
+      "id": "chess-assistant-01591",
+      "fen": "rnbqkb1r/ppppppp1/8/3n3p/P7/3P1NP1/1PP1PP1P/RNBQKB1R b KQkq - 0 4",
+      "must_include": [
+        "d5f6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbqkb1r/ppppppp1/8/3n3p/P7/3P1NP1/1PP1PP1P/RNBQKB1R b KQkq - 0 4"
+    },
+    {
+      "id": "chess-assistant-01601",
+      "fen": "rnbqk1nr/pppp1ppp/8/4P3/8/8/PPPbPPPP/RNB1KBNR w KQkq - 0 4",
+      "must_include": [
+        "c1d2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqk1nr/pppp1ppp/8/4P3/8/8/PPPbPPPP/RNB1KBNR w KQkq - 0 4"
+    },
+    {
+      "id": "chess-assistant-01611",
+      "fen": "1rbq1kn1/2pp2R1/1pn2p2/p7/P1P5/7P/RP2PP1N/2BK1B2 b - - 1 16",
+      "must_include": [
+        "f8g7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1rbq1kn1/2pp2R1/1pn2p2/p7/P1P5/7P/RP2PP1N/2BK1B2 b - - 1 16"
+    },
+    {
+      "id": "chess-assistant-01621",
+      "fen": "1rb3k1/n7/1p1p1p1n/p1p5/P1P4q/3K3B/1P5N/6R1 b - - 1 28",
+      "must_include": [
+        "g8f7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 1rb3k1/n7/1p1p1p1n/p1p5/P1P4q/3K3B/1P5N/6R1 b - - 1 28"
+    },
+    {
+      "id": "chess-assistant-01631",
+      "fen": "r1b1k1n1/p4pb1/n1ppp3/2p3P1/7P/2PP4/PP1BP3/RN1QK1N1 w Qq - 1 12",
+      "must_include": [
+        "g1f3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r1b1k1n1/p4pb1/n1ppp3/2p3P1/7P/2PP4/PP1BP3/RN1QK1N1 w Qq - 1 12"
+    },
+    {
+      "id": "chess-assistant-01641",
+      "fen": "rnbqk1nr/pppp2pp/4pp2/2P5/5P2/2P5/P2PP1PP/RNBQKBNR b KQkq - 0 4",
+      "must_include": [
+        "b7b6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqk1nr/pppp2pp/4pp2/2P5/5P2/2P5/P2PP1PP/RNBQKBNR b KQkq - 0 4"
+    },
+    {
+      "id": "chess-assistant-01651",
+      "fen": "rnbqkbnr/ppppp2p/B7/5pp1/4P3/8/PPPP1PPP/RNBQK1NR w KQkq - 0 3",
+      "must_include": [
+        "d1h5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbqkbnr/ppppp2p/B7/5pp1/4P3/8/PPPP1PPP/RNBQK1NR w KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-01661",
+      "fen": "rnb1q3/pppkb3/3p4/5p2/P7/NP6/R1PP1PPr/2B1K2R b K - 1 16",
+      "must_include": [
+        "e7h4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnb1q3/pppkb3/3p4/5p2/P7/NP6/R1PP1PPr/2B1K2R b K - 1 16"
+    },
+    {
+      "id": "chess-assistant-01671",
+      "fen": "1nb1k1nr/r1pp2pp/p4p1B/1p2p3/8/P2P1P2/P1P1PKPP/R2Q1BR1 b k - 1 9",
+      "must_include": [
+        "g8h6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1nb1k1nr/r1pp2pp/p4p1B/1p2p3/8/P2P1P2/P1P1PKPP/R2Q1BR1 b k - 1 9"
+    },
+    {
+      "id": "chess-assistant-01681",
+      "fen": "6nr/1r1k4/p2p4/1pp1p3/8/P2PPPK1/R1P3P1/5B2 b - - 0 22",
+      "must_include": [
+        "b7b8",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 6nr/1r1k4/p2p4/1pp1p3/8/P2PPPK1/R1P3P1/5B2 b - - 0 22"
+    },
+    {
+      "id": "chess-assistant-01691",
+      "fen": "1nbqkb1r/1pBppp1p/r7/p7/3P2n1/5K2/PPP1P2P/RN1Q1BNR b k - 0 7",
+      "must_include": [
+        "d8c7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1nbqkb1r/1pBppp1p/r7/p7/3P2n1/5K2/PPP1P2P/RN1Q1BNR b k - 0 7"
+    },
+    {
+      "id": "chess-assistant-01701",
+      "fen": "rnbqkbnr/2pppp1p/p5p1/8/3PP3/8/PPPQ1PPP/RNB1K1NR b KQkq - 1 4",
+      "must_include": [
+        "b8c6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/2pppp1p/p5p1/8/3PP3/8/PPPQ1PPP/RNB1K1NR b KQkq - 1 4"
+    },
+    {
+      "id": "chess-assistant-01711",
+      "fen": "1n3b1r/r2kpp1p/p7/2p5/8/8/PP1NKPNP/R1B4R b - - 0 16",
+      "must_include": [
+        "b8c6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1n3b1r/r2kpp1p/p7/2p5/8/8/PP1NKPNP/R1B4R b - - 0 16"
+    },
+    {
+      "id": "chess-assistant-01721",
+      "fen": "rnb1kbnr/pp1ppppN/2p5/7p/8/P6P/1qPPPPP1/RNBQKB1R w KQkq - 0 6",
+      "must_include": [
+        "c1b2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnb1kbnr/pp1ppppN/2p5/7p/8/P6P/1qPPPPP1/RNBQKB1R w KQkq - 0 6"
+    },
+    {
+      "id": "chess-assistant-01731",
+      "fen": "rnbk4/pp1ppp2/2p2n1b/6p1/2N5/P1PPK2B/1B3P2/R7 w - - 1 18",
+      "must_include": [
+        "e3f3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbk4/pp1ppp2/2p2n1b/6p1/2N5/P1PPK2B/1B3P2/R7 w - - 1 18"
+    },
+    {
+      "id": "chess-assistant-01741",
+      "fen": "rn1qkbnr/p1pppppp/bp6/8/2P5/7N/PP1PPPPP/RNBQKB1R w KQkq - 1 3",
+      "must_include": [
+        "e2e3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rn1qkbnr/p1pppppp/bp6/8/2P5/7N/PP1PPPPP/RNBQKB1R w KQkq - 1 3"
+    },
+    {
+      "id": "chess-assistant-01751",
+      "fen": "rnbqkbnr/pp1pppp1/2p4p/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 3",
+      "must_include": [
+        "e2e4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbqkbnr/pp1pppp1/2p4p/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-01761",
+      "fen": "r1bqkbnr/ppppppp1/2n4p/8/P7/8/RPPPPPPP/1NBQKBNR w Kkq - 0 3",
+      "must_include": [
+        "c2c3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1bqkbnr/ppppppp1/2n4p/8/P7/8/RPPPPPPP/1NBQKBNR w Kkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-01771",
+      "fen": "rn2kbnr/p3pp2/2p4p/1pp3p1/2P3P1/3P3P/1P1QPP2/2B1KBNR b Kkq - 1 13",
+      "must_include": [
+        "f8g7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rn2kbnr/p3pp2/2p4p/1pp3p1/2P3P1/3P3P/1P1QPP2/2B1KBNR b Kkq - 1 13"
+    },
+    {
+      "id": "chess-assistant-01781",
+      "fen": "r6r/3kn3/2p1pp2/p1p3p1/5PP1/7P/1P3K2/5BNR b - - 0 25",
+      "must_include": [
+        "g5f4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r6r/3kn3/2p1pp2/p1p3p1/5PP1/7P/1P3K2/5BNR b - - 0 25"
+    },
+    {
+      "id": "chess-assistant-01791",
+      "fen": "rnbqkbnr/1ppp1ppp/4p3/p7/5B2/3P4/PPP1PPPP/RN1QKBNR w KQkq - 0 3",
+      "must_include": [
+        "e2e4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbqkbnr/1ppp1ppp/4p3/p7/5B2/3P4/PPP1PPPP/RN1QKBNR w KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-01801",
+      "fen": "1nb2bnr/1p1pkppp/4p3/8/7P/3P1P2/RPP1P1P1/1N1QKBNR b K - 0 9",
+      "must_include": [
+        "b8c6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 1nb2bnr/1p1pkppp/4p3/8/7P/3P1P2/RPP1P1P1/1N1QKBNR b K - 0 9"
+    },
+    {
+      "id": "chess-assistant-01811",
+      "fen": "1n3b2/1b1p1ppr/7p/2P2n2/3k3P/5PP1/1P2P3/1N2KBNR w K - 0 21",
+      "must_include": [
+        "e2e4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1n3b2/1b1p1ppr/7p/2P2n2/3k3P/5PP1/1P2P3/1N2KBNR w K - 0 21"
+    },
+    {
+      "id": "chess-assistant-01821",
+      "fen": "1n6/1b1p1p2/1k6/7p/4N3/1P3PP1/4P1K1/5Bb1 w - - 0 30",
+      "must_include": [
+        "g2g1",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 1n6/1b1p1p2/1k6/7p/4N3/1P3PP1/4P1K1/5Bb1 w - - 0 30"
+    },
+    {
+      "id": "chess-assistant-01831",
+      "fen": "2Bqkbr1/p2pnppp/3p4/8/8/4PP2/Pr1P2PP/RNBQKR2 b Q - 0 10",
+      "must_include": [
+        "b2b6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 2Bqkbr1/p2pnppp/3p4/8/8/4PP2/Pr1P2PP/RNBQKR2 b Q - 0 10"
+    },
+    {
+      "id": "chess-assistant-01841",
+      "fen": "5br1/R4ppp/3pk3/8/4q3/5PP1/PB1P3P/3nKR2 w - - 1 18",
+      "must_include": [
+        "f3e4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 5br1/R4ppp/3pk3/8/4q3/5PP1/PB1P3P/3nKR2 w - - 1 18"
+    },
+    {
+      "id": "chess-assistant-01851",
+      "fen": "8/3k3R/8/4p3/1b4r1/3P4/1K6/8 b - - 0 28",
+      "must_include": [
+        "d7c6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 8/3k3R/8/4p3/1b4r1/3P4/1K6/8 b - - 0 28"
+    },
+    {
+      "id": "chess-assistant-01861",
+      "fen": "1nbqkbnr/r1p3pp/pN1p1p2/4p3/8/5P1P/PPPPP1PR/1RBQKBN1 b k - 0 7",
+      "must_include": [
+        "c7b6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 1nbqkbnr/r1p3pp/pN1p1p2/4p3/8/5P1P/PPPPP1PR/1RBQKBN1 b k - 0 7"
+    },
+    {
+      "id": "chess-assistant-01871",
+      "fen": "2N1k1nr/r5p1/p1n2p1p/8/Nb6/5Pq1/P1PK4/1RBQ1B2 w k - 0 18",
+      "must_include": [
+        "c2c3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 2N1k1nr/r5p1/p1n2p1p/8/Nb6/5Pq1/P1PK4/1RBQ1B2 w k - 0 18"
+    },
+    {
+      "id": "chess-assistant-01881",
+      "fen": "r1bqkbnr/ppppp1p1/n6p/5p2/3P1B2/1P6/P1P1PPPP/RN1QKBNR w KQkq - 0 5",
+      "must_include": [
+        "e2e4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1bqkbnr/ppppp1p1/n6p/5p2/3P1B2/1P6/P1P1PPPP/RN1QKBNR w KQkq - 0 5"
+    },
+    {
+      "id": "chess-assistant-01891",
+      "fen": "r1bq4/pppppr2/5n2/5p1k/P2P3P/1P3P2/2N1P1P1/2R1KBNR w K - 1 15",
+      "must_include": [
+        "e1f2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r1bq4/pppppr2/5n2/5p1k/P2P3P/1P3P2/2N1P1P1/2R1KBNR w K - 1 15"
+    },
+    {
+      "id": "chess-assistant-01901",
+      "fen": "rn1qkb1r/2B1ppp1/3p4/1p5p/3n1P2/3P4/PP4BP/RN1K2NR b kq - 0 11",
+      "must_include": [
+        "d8c7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rn1qkb1r/2B1ppp1/3p4/1p5p/3n1P2/3P4/PP4BP/RN1K2NR b kq - 0 11"
+    },
+    {
+      "id": "chess-assistant-01911",
+      "fen": "3k1b1r/4ppp1/8/Rp5p/3n4/3r4/8/1NK2BNR b - - 1 22",
+      "must_include": [
+        "d3e3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 3k1b1r/4ppp1/8/Rp5p/3n4/3r4/8/1NK2BNR b - - 1 22"
+    },
+    {
+      "id": "chess-assistant-01921",
+      "fen": "rnbqkbnr/1p1ppppp/p1p5/8/7P/1P6/P1PPPPP1/RNBQKBNR w KQkq - 0 3",
+      "must_include": [
+        "e2e3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/1p1ppppp/p1p5/8/7P/1P6/P1PPPPP1/RNBQKBNR w KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-01931",
+      "fen": "1r1qkb1r/ppp1ppp1/3p1n2/5B1p/P6P/1PP1PNP1/3P1P2/RNBQK2R b KQk - 0 10",
+      "must_include": [
+        "c7c5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1r1qkb1r/ppp1ppp1/3p1n2/5B1p/P6P/1PP1PNP1/3P1P2/RNBQK2R b KQk - 0 10"
+    },
+    {
+      "id": "chess-assistant-01941",
+      "fen": "2rN4/ppk1p3/3p4/2p4p/P6P/1PNPP1r1/5P2/R2Q1RK1 w - - 0 22",
       "must_include": [
         "f2g3",
         "legal"
       ],
       "must_not_include": [
         "I cannot tell",
-        "any move is fine"
+        "any move is fine",
+        "illegal"
       ],
-      "question": "What is the best move in this position, and why?\nFEN: 8/5pk1/6p1/8/4P3/5P2/5KPP/8 w - - 0 38"
+      "question": "What is the best move in this position, and why?\nFEN: 2rN4/ppk1p3/3p4/2p4p/P6P/1PNPP1r1/5P2/R2Q1RK1 w - - 0 22"
+    },
+    {
+      "id": "chess-assistant-01951",
+      "fen": "rnbqkbnr/pp1ppp1p/2p3p1/8/8/N4N2/PPPPPPPP/R1BQKB1R w KQkq - 0 3",
+      "must_include": [
+        "e2e4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbqkbnr/pp1ppp1p/2p3p1/8/8/N4N2/PPPPPPPP/R1BQKB1R w KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-01961",
+      "fen": "r4knr/p2qp2p/3p2pb/8/1P3P2/3P2P1/P2P3P/R1BQKB1R w KQ - 0 15",
+      "must_include": [
+        "d1f3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r4knr/p2qp2p/3p2pb/8/1P3P2/3P2P1/P2P3P/R1BQKB1R w KQ - 0 15"
+    },
+    {
+      "id": "chess-assistant-01971",
+      "fen": "2n2k1B/8/3p3p/P5p1/8/3P3K/P2P3P/R4B1R w - - 0 27",
+      "must_include": [
+        "h3g3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 2n2k1B/8/3p3p/P5p1/8/3P3K/P2P3P/R4B1R w - - 0 27"
+    },
+    {
+      "id": "chess-assistant-01981",
+      "fen": "rnbqkbnr/1ppppp1p/p7/6p1/4P3/N7/PPPP1PPP/R1BQKBNR w KQkq - 0 3",
+      "must_include": [
+        "d2d4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/1ppppp1p/p7/6p1/4P3/N7/PPPP1PPP/R1BQKBNR w KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-01991",
+      "fen": "1nbqkbnr/1ppppppp/8/8/1P2P3/2P5/P1P2PPP/R1BQK1NR b KQk - 0 5",
+      "must_include": [
+        "e7e5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1nbqkbnr/1ppppppp/8/8/1P2P3/2P5/P1P2PPP/R1BQK1NR b KQk - 0 5"
+    },
+    {
+      "id": "chess-assistant-02001",
+      "fen": "1nb1kb1r/2p2ppp/1p6/1P2p3/3nPPP1/P1P4N/2P2K2/R2q4 w k - 0 16",
+      "must_include": [
+        "a1d1",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 1nb1kb1r/2p2ppp/1p6/1P2p3/3nPPP1/P1P4N/2P2K2/R2q4 w k - 0 16"
+    },
+    {
+      "id": "chess-assistant-02011",
+      "fen": "1n4r1/1bp2kpp/1p6/1P3P2/1R3KP1/b1P4N/2P5/8 b - - 0 25",
+      "must_include": [
+        "a3b4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1n4r1/1bp2kpp/1p6/1P3P2/1R3KP1/b1P4N/2P5/8 b - - 0 25"
+    },
+    {
+      "id": "chess-assistant-02021",
+      "fen": "rn1q2nr/p2kbp1p/6p1/1N6/6b1/1P6/P1PPPPP1/R2QKBNR b KQ - 0 8",
+      "must_include": [
+        "d7e8",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rn1q2nr/p2kbp1p/6p1/1N6/6b1/1P6/P1PPPPP1/R2QKBNR b KQ - 0 8"
+    },
+    {
+      "id": "chess-assistant-02031",
+      "fen": "rn4nr/p6p/4k3/1N3p2/6Q1/1P4P1/P1PK4/R7 w - - 0 18",
+      "must_include": [
+        "a1e1",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rn4nr/p6p/4k3/1N3p2/6Q1/1P4P1/P1PK4/R7 w - - 0 18"
+    },
+    {
+      "id": "chess-assistant-02041",
+      "fen": "r3kbnr/p1p2p2/2n3p1/1B1qB2p/P3p3/7N/2PP1PPR/RN1QK3 b kq - 0 12",
+      "must_include": [
+        "d5e5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r3kbnr/p1p2p2/2n3p1/1B1qB2p/P3p3/7N/2PP1PPR/RN1QK3 b kq - 0 12"
+    },
+    {
+      "id": "chess-assistant-02051",
+      "fen": "rnb1kbnr/pppp1ppp/8/4p3/7q/1P3P2/P1PPP1PP/RNBQKBNR w KQkq - 1 3",
+      "must_include": [
+        "g2g3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnb1kbnr/pppp1ppp/8/4p3/7q/1P3P2/P1PPP1PP/RNBQKBNR w KQkq - 1 3"
+    },
+    {
+      "id": "chess-assistant-02061",
+      "fen": "rn2k3/p1pb1pp1/1p3n1r/4p3/2P5/bP2PPP1/P2P4/1RQ1KBN1 b q - 1 12",
+      "must_include": [
+        "a3c1",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rn2k3/p1pb1pp1/1p3n1r/4p3/2P5/bP2PPP1/P2P4/1RQ1KBN1 b q - 1 12"
+    },
+    {
+      "id": "chess-assistant-02071",
+      "fen": "rnbqkbnr/p1ppp1pp/5p2/1p6/5P2/4P3/PPPP2PP/RNBQKBNR w KQkq - 0 3",
+      "must_include": [
+        "f1b5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbqkbnr/p1ppp1pp/5p2/1p6/5P2/4P3/PPPP2PP/RNBQKBNR w KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-02081",
+      "fen": "r4bnr/p1p1p2p/5ppk/3B1P2/4P3/5K2/PPP1N1PP/RNB4R b - - 0 13",
+      "must_include": [
+        "h6h5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r4bnr/p1p1p2p/5ppk/3B1P2/4P3/5K2/PPP1N1PP/RNB4R b - - 0 13"
+    },
+    {
+      "id": "chess-assistant-02091",
+      "fen": "4r2k/p1p4p/5p2/5p2/8/N1B1bK2/PPP3PP/4R2R w - - 6 23",
+      "must_include": [
+        "e1e3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 4r2k/p1p4p/5p2/5p2/8/N1B1bK2/PPP3PP/4R2R w - - 6 23"
+    },
+    {
+      "id": "chess-assistant-02101",
+      "fen": "rnb1kbnQ/4ppp1/p1pp4/8/1p1P1P2/1P6/1BP1PKPP/1R3BNR b q - 0 10",
+      "must_include": [
+        "g8f6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnb1kbnQ/4ppp1/p1pp4/8/1p1P1P2/1P6/1BP1PKPP/1R3BNR b q - 0 10"
+    },
+    {
+      "id": "chess-assistant-02111",
+      "fen": "3k1b2/5p2/p1n5/2p5/1pP2P2/1P1K3P/1B2P1B1/1R4NR w - - 2 21",
+      "must_include": [
+        "g2c6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 3k1b2/5p2/p1n5/2p5/1pP2P2/1P1K3P/1B2P1B1/1R4NR w - - 2 21"
+    },
+    {
+      "id": "chess-assistant-02121",
+      "fen": "8/1k6/8/2p1b3/2P4P/1PK4B/4P3/6NR w - - 0 33",
+      "must_include": [
+        "c3d3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 8/1k6/8/2p1b3/2P4P/1PK4B/4P3/6NR w - - 0 33"
+    },
+    {
+      "id": "chess-assistant-02131",
+      "fen": "rnbq1b1r/pppkQ3/8/3p3p/3P3P/PnP5/1P2PPP1/RNBK1BNR b - - 0 9",
+      "must_include": [
+        "f8e7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnbq1b1r/pppkQ3/8/3p3p/3P3P/PnP5/1P2PPP1/RNBK1BNR b - - 0 9"
+    },
+    {
+      "id": "chess-assistant-02141",
+      "fen": "rnb5/ppB3r1/1n2k3/3p3p/3P3P/P1P2P2/R1K1P1P1/1N3BNR w - - 3 21",
+      "must_include": [
+        "c7b6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnb5/ppB3r1/1n2k3/3p3p/3P3P/P1P2P2/R1K1P1P1/1N3BNR w - - 3 21"
+    },
+    {
+      "id": "chess-assistant-02151",
+      "fen": "rn2kb1r/p2pppp1/1pp5/7p/3PP3/5NPP/PPPBbK2/R2Q1B1R w kq - 0 11",
+      "must_include": [
+        "f1e2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rn2kb1r/p2pppp1/1pp5/7p/3PP3/5NPP/PPPBbK2/R2Q1B1R w kq - 0 11"
+    },
+    {
+      "id": "chess-assistant-02161",
+      "fen": "r3kb2/8/Qpn4p/5K1p/1P1p4/6PP/P1P5/R6R b - - 0 22",
+      "must_include": [
+        "a8a6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r3kb2/8/Qpn4p/5K1p/1P1p4/6PP/P1P5/R6R b - - 0 22"
+    },
+    {
+      "id": "chess-assistant-02171",
+      "fen": "3b4/5k2/8/5K2/pP5R/6PP/2P5/1R6 b - - 1 33",
+      "must_include": [
+        "d8b6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 3b4/5k2/8/5K2/pP5R/6PP/2P5/1R6 b - - 1 33"
+    },
+    {
+      "id": "chess-assistant-02181",
+      "fen": "r2qkb2/1pp3p1/n2pBn2/8/P1P5/8/3P1P1r/RNBQ1KNR w - - 0 12",
+      "must_include": [
+        "h1h2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r2qkb2/1pp3p1/n2pBn2/8/P1P5/8/3P1P1r/RNBQ1KNR w - - 0 12"
+    },
+    {
+      "id": "chess-assistant-02191",
+      "fen": "r1bqkbn1/pppppp2/2n5/6p1/3P4/4P3/PPP2PPr/RNB1K1NR w KQq - 0 6",
+      "must_include": [
+        "h1h2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r1bqkbn1/pppppp2/2n5/6p1/3P4/4P3/PPP2PPr/RNB1K1NR w KQq - 0 6"
+    },
+    {
+      "id": "chess-assistant-02201",
+      "fen": "6nr/1p1p1k1p/8/1Nq3p1/6p1/8/2PPPP1P/2BQKBNR w K - 0 14",
+      "must_include": [
+        "e2e3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 6nr/1p1p1k1p/8/1Nq3p1/6p1/8/2PPPP1P/2BQKBNR w K - 0 14"
+    },
+    {
+      "id": "chess-assistant-02211",
+      "fen": "8/7p/8/6k1/4P3/6P1/2P3BP/5KNR b - - 0 25",
+      "must_include": [
+        "g5h5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 8/7p/8/6k1/4P3/6P1/2P3BP/5KNR b - - 0 25"
+    },
+    {
+      "id": "chess-assistant-02221",
+      "fen": "r1bqk1nr/1p1p2pp/2p5/4Pp2/1n1Q4/6PN/PPP1PP1P/RN2KB1R w KQkq - 0 9",
+      "must_include": [
+        "d4b4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1bqk1nr/1p1p2pp/2p5/4Pp2/1n1Q4/6PN/PPP1PP1P/RN2KB1R w KQkq - 0 9"
+    },
+    {
+      "id": "chess-assistant-02231",
+      "fen": "4k3/1p2n1pR/2p5/5p2/8/6P1/3qPP2/RN2KB2 w Q - 1 21",
+      "must_include": [
+        "b1d2",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 4k3/1p2n1pR/2p5/5p2/8/6P1/3qPP2/RN2KB2 w Q - 1 21"
+    },
+    {
+      "id": "chess-assistant-02241",
+      "fen": "7R/5kp1/2n5/1p6/2B5/8/8/1N2K3 b - - 0 31",
+      "must_include": [
+        "b5c4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 7R/5kp1/2n5/1p6/2B5/8/8/1N2K3 b - - 0 31"
+    },
+    {
+      "id": "chess-assistant-02251",
+      "fen": "r1b1kb1r/ppp4p/q2p1p1n/8/5P2/P5K1/1PPP2PP/RNB3NR b kq - 0 11",
+      "must_include": [
+        "h8g8",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r1b1kb1r/ppp4p/q2p1p1n/8/5P2/P5K1/1PPP2PP/RNB3NR b kq - 0 11"
+    },
+    {
+      "id": "chess-assistant-02261",
+      "fen": "rnb1k3/p4pp1/1p1Npn2/2p5/4PP2/3P4/P1PK2P1/R1B2BNr b q - 0 13",
+      "must_include": [
+        "e8f8",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnb1k3/p4pp1/1p1Npn2/2p5/4PP2/3P4/P1PK2P1/R1B2BNr b q - 0 13"
+    },
+    {
+      "id": "chess-assistant-02271",
+      "fen": "r1b3k1/p2B2p1/4Pp2/1Rp5/3P4/4r3/P1P3P1/3K2N1 b - - 1 25",
+      "must_include": [
+        "c8d7",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r1b3k1/p2B2p1/4Pp2/1Rp5/3P4/4r3/P1P3P1/3K2N1 b - - 1 25"
+    },
+    {
+      "id": "chess-assistant-02281",
+      "fen": "rnbqkbnr/p1pppp1p/1p4p1/1B6/4P3/8/PPPP1PPP/RNBQK1NR w KQkq - 0 3",
+      "must_include": [
+        "g1f3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/p1pppp1p/1p4p1/1B6/4P3/8/PPPP1PPP/RNBQK1NR w KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-02291",
+      "fen": "1n1qkbn1/pB2p3/1p3pp1/2p5/P1PNP3/6P1/1P1PKP2/RNr5 w - - 0 15",
+      "must_include": [
+        "d4e6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1n1qkbn1/pB2p3/1p3pp1/2p5/P1PNP3/6P1/1P1PKP2/RNr5 w - - 0 15"
+    },
+    {
+      "id": "chess-assistant-02301",
+      "fen": "8/p4B2/5p2/1Pp1k1p1/P3P3/3K2P1/1P1P1P2/8 b - - 0 28",
+      "must_include": [
+        "f6f5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 8/p4B2/5p2/1Pp1k1p1/P3P3/3K2P1/1P1P1P2/8 b - - 0 28"
+    },
+    {
+      "id": "chess-assistant-02311",
+      "fen": "2bqk1nr/3pppb1/npp4p/8/2PP4/5P1N/4P1PP/N1Q1KB1R w Kk - 2 12",
+      "must_include": [
+        "e2e3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 2bqk1nr/3pppb1/npp4p/8/2PP4/5P1N/4P1PP/N1Q1KB1R w Kk - 2 12"
+    },
+    {
+      "id": "chess-assistant-02321",
+      "fen": "rn1q1knr/p1p1pp1p/6p1/1p6/6B1/N6P/PPP2PP1/R1Q2KNR b - - 0 10",
+      "must_include": [
+        "c7c6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rn1q1knr/p1p1pp1p/6p1/1p6/6B1/N6P/PPP2PP1/R1Q2KNR b - - 0 10"
+    },
+    {
+      "id": "chess-assistant-02331",
+      "fen": "rnb2bnr/pp1kpp1p/1q4p1/2p5/6Q1/4P3/PPPP1PPP/R1B1K1NR b KQ - 1 7",
+      "must_include": [
+        "d7d8",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnb2bnr/pp1kpp1p/1q4p1/2p5/6Q1/4P3/PPPP1PPP/R1B1K1NR b KQ - 1 7"
+    },
+    {
+      "id": "chess-assistant-02341",
+      "fen": "rnb2bn1/pp2pp2/4k1p1/8/P7/p3P3/2PP1K1N/2B4R w - - 0 18",
+      "must_include": [
+        "c1a3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnb2bn1/pp2pp2/4k1p1/8/P7/p3P3/2PP1K1N/2B4R w - - 0 18"
+    },
+    {
+      "id": "chess-assistant-02351",
+      "fen": "rn4n1/p1k2N2/1p4p1/8/6Kb/4Pb2/2PP4/8 w - - 4 31",
+      "must_include": [
+        "g4f3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rn4n1/p1k2N2/1p4p1/8/6Kb/4Pb2/2PP4/8 w - - 4 31"
+    },
+    {
+      "id": "chess-assistant-02361",
+      "fen": "rnbqkbnr/1pppp1pp/5p2/p7/3P4/2P2P2/PP2P1PP/RN1QKBNR w KQkq - 1 6",
+      "must_include": [
+        "e2e4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/1pppp1pp/5p2/p7/3P4/2P2P2/PP2P1PP/RN1QKBNR w KQkq - 1 6"
+    },
+    {
+      "id": "chess-assistant-02371",
+      "fen": "rnb1k2r/2p2pbp/1p2p2P/1p6/3PP3/2P4P/PP4P1/RNBQ1KNR w kq - 0 12",
+      "must_include": [
+        "d1e1",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnb1k2r/2p2pbp/1p2p2P/1p6/3PP3/2P4P/PP4P1/RNBQ1KNR w kq - 0 12"
+    },
+    {
+      "id": "chess-assistant-02381",
+      "fen": "rnbqk1nr/ppp2ppp/3bp3/3p4/P1P5/N7/1P1PPPPP/R1BQKBNR w KQkq - 2 4",
+      "must_include": [
+        "e2e3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqk1nr/ppp2ppp/3bp3/3p4/P1P5/N7/1P1PPPPP/R1BQKBNR w KQkq - 2 4"
+    },
+    {
+      "id": "chess-assistant-02391",
+      "fen": "2bq1k1r/1pp3pp/2nb4/1Qn5/R7/1P1P4/4PPPP/2B1KBNR w K - 1 13",
+      "must_include": [
+        "a4c4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 2bq1k1r/1pp3pp/2nb4/1Qn5/R7/1P1P4/4PPPP/2B1KBNR w K - 1 13"
+    },
+    {
+      "id": "chess-assistant-02401",
+      "fen": "r1b1kbnr/1ppp1pp1/n6p/4q3/Pp6/8/1BPPP1PP/RN1QKBNR w KQkq - 0 8",
+      "must_include": [
+        "b2e5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1b1kbnr/1ppp1pp1/n6p/4q3/Pp6/8/1BPPP1PP/RN1QKBNR w KQkq - 0 8"
+    },
+    {
+      "id": "chess-assistant-02411",
+      "fen": "2b1kb1r/2pp4/5p1R/5r2/Pp6/3Q1NP1/6P1/RN2KB2 w Qk - 1 18",
+      "must_include": [
+        "h6h8",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 2b1kb1r/2pp4/5p1R/5r2/Pp6/3Q1NP1/6P1/RN2KB2 w Qk - 1 18"
+    },
+    {
+      "id": "chess-assistant-02421",
+      "fen": "rnbq1kn1/pp1p4/2p1ppp1/8/8/P1N1PP2/P1PP2PR/R1B1KBN1 b Q - 1 10",
+      "must_include": [
+        "d7d5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbq1kn1/pp1p4/2p1ppp1/8/8/P1N1PP2/P1PP2PR/R1B1KBN1 b Q - 1 10"
+    },
+    {
+      "id": "chess-assistant-02431",
+      "fen": "rnb3n1/p1kp4/p1p1p1pR/5p2/2P5/P3PP2/P5P1/RN2K1N1 b Q - 1 19",
+      "must_include": [
+        "g8h6",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rnb3n1/p1kp4/p1p1p1pR/5p2/2P5/P3PP2/P5P1/RN2K1N1 b Q - 1 19"
+    },
+    {
+      "id": "chess-assistant-02441",
+      "fen": "r1b2bnr/pp1npkpp/5p2/q1P5/1B6/8/PPP1PPPP/RN2KBNR w KQ - 0 6",
+      "must_include": [
+        "b4a5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: r1b2bnr/pp1npkpp/5p2/q1P5/1B6/8/PPP1PPPP/RN2KBNR w KQ - 0 6"
+    },
+    {
+      "id": "chess-assistant-02451",
+      "fen": "r4bnr/p3pkp1/5p2/1pP4p/1B4b1/N1PnP3/3K1PPP/7R w - - 0 17",
+      "must_include": [
+        "a3b5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: r4bnr/p3pkp1/5p2/1pP4p/1B4b1/N1PnP3/3K1PPP/7R w - - 0 17"
+    },
+    {
+      "id": "chess-assistant-02461",
+      "fen": "rnbqkbnr/p1ppppp1/8/1p5p/4P3/N7/PPPP1PPP/R1BQKBNR w KQkq - 0 3",
+      "must_include": [
+        "a3b5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/p1ppppp1/8/1p5p/4P3/N7/PPPP1PPP/R1BQKBNR w KQkq - 0 3"
+    },
+    {
+      "id": "chess-assistant-02471",
+      "fen": "rn1qkb2/2pp1pp1/3p4/p7/P3b3/8/1PPPNP1r/R1BQKB2 w q - 2 13",
+      "must_include": [
+        "e2c3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: rn1qkb2/2pp1pp1/3p4/p7/P3b3/8/1PPPNP1r/R1BQKB2 w q - 2 13"
+    },
+    {
+      "id": "chess-assistant-02481",
+      "fen": "rnbq1bnr/pppppkpp/8/5p2/6PP/8/PPPPPP2/RNBQKBNR w KQ - 1 3",
+      "must_include": [
+        "g4f5",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbq1bnr/pppppkpp/8/5p2/6PP/8/PPPPPP2/RNBQKBNR w KQ - 1 3"
+    },
+    {
+      "id": "chess-assistant-02491",
+      "fen": "1Qb1kbnr/1p1pp1pp/5r2/p1p4P/P3K3/2P5/1P3P2/RNB2BN1 w - - 3 15",
+      "must_include": [
+        "b8c8",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine",
+        "illegal"
+      ],
+      "question": "Is there a tactic here? Give the move and the reason.\nFEN: 1Qb1kbnr/1p1pp1pp/5r2/p1p4P/P3K3/2P5/1P3P2/RNB2BN1 w - - 3 15"
     }
   ],
   "metrics": [

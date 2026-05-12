@@ -29,30 +29,91 @@ class ChessEngineConfig:
     depth: int | None = None
     hash_mb: int = 64
     threads: int = 1
+    require_engine: bool = False
+    limit_strength: bool = False
+    uci_elo: int | None = None
 
 
 def analyse_fen(fen: str, config: ChessEngineConfig | None = None) -> EngineLine:
-    board = board_from_fen(fen)
+    return analyse_board(board_from_fen(fen), config)
+
+
+def analyse_board(board: chess.Board, config: ChessEngineConfig | None = None) -> EngineLine:
     if board.is_game_over():
         return _game_over_line(board)
 
     config = config or ChessEngineConfig()
-    engine_path = None if config.engine_path == "" else (config.engine_path or shutil.which("stockfish"))
+    engine_path = _resolve_engine_path(config)
     if engine_path:
         try:
             return _stockfish_line(board, engine_path, config)
         except (chess.engine.EngineError, chess.engine.EngineTerminatedError, OSError):
-            pass
+            if config.require_engine:
+                raise
+    elif config.require_engine:
+        raise RuntimeError("Stockfish is required for this operation but no UCI engine was found.")
     return _fallback_line(board, depth=config.depth or 2)
+
+
+class StockfishBatchAnalyzer:
+    """Reusable Stockfish adapter for dataset generation and benchmarks."""
+
+    def __init__(self, config: ChessEngineConfig | None = None) -> None:
+        self.config = config or ChessEngineConfig()
+        self.engine: chess.engine.SimpleEngine | None = None
+
+    def __enter__(self) -> StockfishBatchAnalyzer:
+        engine_path = _resolve_engine_path(self.config)
+        if engine_path:
+            self.engine = chess.engine.SimpleEngine.popen_uci(engine_path)
+            _configure_stockfish(self.engine, self.config)
+        elif self.config.require_engine:
+            raise RuntimeError("Stockfish is required for this operation but no UCI engine was found.")
+        return self
+
+    def __exit__(self, exc_type: object, exc: object, traceback: object) -> None:
+        if self.engine is not None:
+            self.engine.quit()
+            self.engine = None
+
+    def analyse(self, board: chess.Board) -> EngineLine:
+        if board.is_game_over():
+            return _game_over_line(board)
+        if self.engine is None:
+            if self.config.require_engine:
+                raise RuntimeError("Stockfish is required for this operation but was not started.")
+            return _fallback_line(board, depth=self.config.depth or 2)
+        limit = _engine_limit(self.config)
+        info = self.engine.analyse(board, limit)
+        pv = info.get("pv", [])
+        best_move = pv[0] if pv else self.engine.play(board, limit).move
+        return _line_from_stockfish_result(board, info, best_move, pv)
+
+
+def _resolve_engine_path(config: ChessEngineConfig) -> str | None:
+    return None if config.engine_path == "" else (config.engine_path or shutil.which("stockfish"))
 
 
 def _stockfish_line(board: chess.Board, engine_path: str, config: ChessEngineConfig) -> EngineLine:
     with chess.engine.SimpleEngine.popen_uci(engine_path) as engine:
         _configure_stockfish(engine, config)
-        limit = chess.engine.Limit(depth=config.depth) if config.depth else chess.engine.Limit(time=config.time_limit)
+        limit = _engine_limit(config)
         info = engine.analyse(board, limit)
         pv = info.get("pv", [])
         best_move = pv[0] if pv else engine.play(board, limit).move
+        return _line_from_stockfish_result(board, info, best_move, pv)
+
+
+def _engine_limit(config: ChessEngineConfig) -> chess.engine.Limit:
+    return chess.engine.Limit(depth=config.depth) if config.depth else chess.engine.Limit(time=config.time_limit)
+
+
+def _line_from_stockfish_result(
+    board: chess.Board,
+    info: dict[str, object],
+    best_move: chess.Move | None,
+    pv: list[chess.Move],
+) -> EngineLine:
     if best_move is None:
         return _fallback_line(board, depth=2)
     pv_moves = [move.uci() for move in pv] if pv else [best_move.uci()]
@@ -74,11 +135,15 @@ def _stockfish_line(board: chess.Board, engine_path: str, config: ChessEngineCon
 
 
 def _configure_stockfish(engine: chess.engine.SimpleEngine, config: ChessEngineConfig) -> None:
-    options: dict[str, int] = {}
+    options: dict[str, int | bool] = {}
     if "Threads" in engine.options:
         options["Threads"] = config.threads
     if "Hash" in engine.options:
         options["Hash"] = config.hash_mb
+    if config.limit_strength and "UCI_LimitStrength" in engine.options:
+        options["UCI_LimitStrength"] = True
+    if config.uci_elo is not None and "UCI_Elo" in engine.options:
+        options["UCI_Elo"] = config.uci_elo
     if options:
         engine.configure(options)
 

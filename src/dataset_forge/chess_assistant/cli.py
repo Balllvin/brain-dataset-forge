@@ -5,9 +5,9 @@ import json
 import sys
 from pathlib import Path
 
-from dataset_forge.chess_assistant.datasets import write_dataset
+from dataset_forge.chess_assistant.datasets import DEFAULT_DATASET_COUNT, write_dataset
 from dataset_forge.chess_assistant.engine import ChessEngineConfig
-from dataset_forge.chess_assistant.eval import play_basic_match, run_chess_eval
+from dataset_forge.chess_assistant.eval import play_basic_match, run_chess_eval, run_elo_benchmark
 from dataset_forge.chess_assistant.language import LanguageConfig
 from dataset_forge.chess_assistant.orchestrator import ChessAssistant, ChessAssistantConfig
 from dataset_forge.chess_assistant.position import ChessInputError
@@ -27,7 +27,7 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps({"output": args.output}, sort_keys=True))
             return 0
         if args.command == "make-data":
-            files = write_dataset(Path(args.output_dir), args.count, engine_config_from_args(args))
+            files = write_dataset(Path(args.output_dir), args.count, engine_config_from_args(args), seed=args.seed)
             print(json.dumps({key: str(path) for key, path in files.items()}, indent=2, sort_keys=True))
             return 0
         if args.command == "eval":
@@ -38,12 +38,34 @@ def main(argv: list[str] | None = None) -> int:
             report = play_basic_match(normalize_fen(args.fen), engine_config_from_args(args), max_plies=args.plies)
             print(json.dumps(report, indent=2, sort_keys=True))
             return 0
+        if args.command == "elo":
+            report = run_elo_benchmark(
+                Path(args.output_dir),
+                assistant_config=engine_config_from_args(args),
+                opponent_elo=args.opponent_elo,
+                games=args.games,
+                max_plies=args.plies,
+            )
+            print(json.dumps(report, indent=2, sort_keys=True))
+            return 0
         if args.command == "plan-train":
-            plan = write_training_plan(Path(args.dataset), Path(args.output), base_model=args.base_model, max_steps=args.max_steps)
+            plan = write_training_plan(
+                Path(args.dataset),
+                Path(args.output),
+                base_model=args.base_model,
+                max_steps=args.max_steps,
+                lora_rank=args.lora_rank,
+            )
             print(json.dumps({"training_plan": str(plan)}, sort_keys=True))
             return 0
         if args.command == "train":
-            output = train_lora_adapter(Path(args.dataset), Path(args.output), base_model=args.base_model, max_steps=args.max_steps)
+            output = train_lora_adapter(
+                Path(args.dataset),
+                Path(args.output),
+                base_model=args.base_model,
+                max_steps=args.max_steps,
+                lora_rank=args.lora_rank,
+            )
             print(json.dumps({"adapter": str(output)}, sort_keys=True))
             return 0
         if args.command == "serve":
@@ -63,7 +85,7 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="dataset-forge-chess", description="Run the small chess assistant example.")
+    parser = argparse.ArgumentParser(prog="dataset-forge-chess", description="Run the chess assistant example.")
     subparsers = parser.add_subparsers(dest="command")
 
     ask = subparsers.add_parser("ask", help="Ask from a FEN or board image.")
@@ -81,7 +103,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     make_data = subparsers.add_parser("make-data", help="Generate chess SFT/eval data.")
     make_data.add_argument("--output-dir", required=True)
-    make_data.add_argument("--count", type=int, default=64)
+    make_data.add_argument("--count", type=int, default=DEFAULT_DATASET_COUNT)
+    make_data.add_argument("--seed", type=int, default=41)
     add_engine_args(make_data)
 
     evaluate = subparsers.add_parser("eval", help="Run legality, image, and match evals.")
@@ -93,17 +116,26 @@ def build_parser() -> argparse.ArgumentParser:
     match.add_argument("--plies", type=int, default=24)
     add_engine_args(match)
 
+    elo = subparsers.add_parser("elo", help="Benchmark assistant move policy against a Stockfish Elo profile.")
+    elo.add_argument("--output-dir", required=True)
+    elo.add_argument("--opponent-elo", type=int, default=2000)
+    elo.add_argument("--games", type=int, default=4)
+    elo.add_argument("--plies", type=int, default=160)
+    add_engine_args(elo, require_default=True)
+
     plan_train = subparsers.add_parser("plan-train", help="Write a reproducible LoRA fine-tuning plan.")
     plan_train.add_argument("--dataset", required=True)
     plan_train.add_argument("--output", required=True)
     plan_train.add_argument("--base-model", default=DEFAULT_BASE_MODEL)
     plan_train.add_argument("--max-steps", type=int, default=80)
+    plan_train.add_argument("--lora-rank", type=int, default=8)
 
-    train = subparsers.add_parser("train", help="Fine-tune a small transformer LoRA adapter.")
+    train = subparsers.add_parser("train", help="Fine-tune a transformer LoRA adapter.")
     train.add_argument("--dataset", required=True)
     train.add_argument("--output", required=True)
     train.add_argument("--base-model", default=DEFAULT_BASE_MODEL)
     train.add_argument("--max-steps", type=int, default=80)
+    train.add_argument("--lora-rank", type=int, default=8)
 
     serve = subparsers.add_parser("serve", help="Serve the browser chess assistant.")
     serve.add_argument("--host", default="127.0.0.1")
@@ -113,18 +145,28 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def add_engine_args(parser: argparse.ArgumentParser) -> None:
+def add_engine_args(parser: argparse.ArgumentParser, require_default: bool = False) -> None:
     parser.add_argument("--engine-path", default=None, help="Path to a UCI engine. Use an empty value to force fallback.")
     parser.add_argument("--engine-time", type=float, default=0.08, help="Seconds per Stockfish analysis call.")
     parser.add_argument("--engine-depth", type=int, default=None, help="Depth limit for deterministic engine calls.")
+    parser.add_argument("--engine-hash-mb", type=int, default=64)
+    parser.add_argument("--engine-threads", type=int, default=1)
+    parser.add_argument("--require-stockfish", action="store_true", default=require_default)
 
 
 def engine_config_from_args(args: argparse.Namespace) -> ChessEngineConfig:
-    return ChessEngineConfig(engine_path=args.engine_path, time_limit=args.engine_time, depth=args.engine_depth)
+    return ChessEngineConfig(
+        engine_path=args.engine_path,
+        time_limit=args.engine_time,
+        depth=args.engine_depth,
+        hash_mb=args.engine_hash_mb,
+        threads=args.engine_threads,
+        require_engine=args.require_stockfish,
+    )
 
 
 def add_language_args(parser: argparse.ArgumentParser) -> None:
-    parser.add_argument("--use-transformer", action="store_true", help="Use the small transformer language adapter when installed.")
+    parser.add_argument("--use-transformer", action="store_true", help="Use the transformer language adapter when installed.")
     parser.add_argument("--adapter-path", default=None, help="Local LoRA adapter path.")
     parser.add_argument("--base-model", default=DEFAULT_BASE_MODEL, help="Small base model for transformer wording.")
 

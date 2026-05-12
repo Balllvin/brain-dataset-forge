@@ -31,7 +31,7 @@ class ChessAssistant:
 
     The public API looks like one assistant. Internally, it runs a vision agent
     for images, a rules agent for legality, an engine agent for chess strength,
-    and an optional small-transformer language agent for final wording.
+    and an optional transformer language agent for final wording.
     """
 
     def __init__(self, config: ChessAssistantConfig | None = None) -> None:

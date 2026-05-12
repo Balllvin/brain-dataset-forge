@@ -11,7 +11,7 @@ from dataset_forge.chess_assistant.types import EngineLine, PositionContext, Vis
 
 @dataclass(frozen=True, slots=True)
 class LanguageConfig:
-    base_model: str = "HuggingFaceTB/SmolLM2-135M-Instruct"
+    base_model: str = "HuggingFaceTB/SmolLM2-360M-Instruct"
     adapter_path: Path | None = None
     max_new_tokens: int = 180
     temperature: float = 0.2
@@ -33,7 +33,7 @@ def build_prompt(question: str, board: chess.Board, position: PositionContext, e
 
 
 class TransformerResponder:
-    """Optional small-transformer responder.
+    """Optional transformer responder.
 
     The dependency is loaded lazily so the chess assistant remains usable in a
     clean clone without downloading model weights. Use the training script to
@@ -61,6 +61,7 @@ class TransformerResponder:
                 max_new_tokens=self.config.max_new_tokens,
                 do_sample=False,
                 clean_up_tokenization_spaces=False,
+                return_full_text=False,
             )
         except Exception:
             return None
@@ -125,6 +126,9 @@ def deterministic_answer(
 
 def acceptable_transformer_answer(text: str, engine: EngineLine) -> bool:
     normalized = " ".join(text.split())
+    leaked_prompt_markers = ("Question:", "FEN:", "Legal moves:", "Engine best move:", "Board summary:")
+    if any(marker in normalized for marker in leaked_prompt_markers):
+        return False
     if len(normalized.split()) < 12:
         return False
     if engine.best_move_uci and engine.best_move_uci not in normalized and engine.best_move_san not in normalized:

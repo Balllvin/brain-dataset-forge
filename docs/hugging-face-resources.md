@@ -13,12 +13,15 @@ These are practical starting points for improving generation, auditing, and trai
 - [HuggingFaceH4/ultrafeedback_binarized](https://hf.co/datasets/HuggingFaceH4/ultrafeedback_binarized): preference pair structure and rejected/chosen response signals.
 - [argilla/ultrafeedback-binarized-preferences-cleaned](https://hf.co/datasets/argilla/ultrafeedback-binarized-preferences-cleaned): cleaned preference data patterns.
 - [openbmb/UltraFeedback](https://hf.co/datasets/openbmb/UltraFeedback): fine-grained critique and reward-model style supervision.
+- [Lichess/chess-puzzles](https://hf.co/datasets/Lichess/chess-puzzles): CC0 puzzle-scale chess FEN, move, rating, and theme reference.
+- [EleutherAI/lichess-puzzles](https://hf.co/datasets/EleutherAI/lichess-puzzles): puzzle subset useful for easy-to-hard chess generalization studies.
 
 ## Model Smoke Targets
 
 - [Qwen/Qwen2.5-0.5B-Instruct](https://hf.co/Qwen/Qwen2.5-0.5B-Instruct): small Apache-licensed local smoke target.
 - [Qwen/Qwen2.5-1.5B-Instruct](https://hf.co/Qwen/Qwen2.5-1.5B-Instruct): stronger local/cheap trainer target.
 - [Qwen/Qwen2.5-7B-Instruct](https://hf.co/Qwen/Qwen2.5-7B-Instruct): larger comparison target when hardware permits.
+- [HuggingFaceTB/SmolLM2-360M-Instruct](https://hf.co/HuggingFaceTB/SmolLM2-360M-Instruct): default chess assistant adapter target for the laptop-sized path.
 
 ## Research Threads
 

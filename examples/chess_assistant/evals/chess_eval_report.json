@@ -1,0 +1,214 @@
+{
+  "case_count": 14,
+  "legal_move_rate": 1.0,
+  "move_mention_rate": 1.0,
+  "image_roundtrip_rate": 1.0,
+  "basic_match": {
+    "start_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+    "final_fen": "1rk2b1r/ppp1pNpp/n3Q3/8/3P2n1/2P1B3/1P3PBP/RN2K2R b KQ - 2 12",
+    "plies": 23,
+    "moves_san": [
+      "e4",
+      "d5",
+      "exd5",
+      "Qxd5",
+      "d4",
+      "Qxg2",
+      "Bxg2",
+      "Na6",
+      "c3",
+      "Rb8",
+      "Nf3",
+      "Be6",
+      "Be3",
+      "Bxa2",
+      "Qa4+",
+      "Kd8",
+      "Qxa2",
+      "Nh6",
+      "Ne5",
+      "Ng4",
+      "Nxf7+",
+      "Kc8",
+      "Qe6#"
+    ],
+    "game_over": true,
+    "material_delta_for_white": 1130
+  },
+  "cases": [
+    {
+      "id": "starting_position",
+      "theme": "opening",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "engine": "stockfish",
+      "best_move_uci": "e2e4",
+      "legal": true,
+      "answer_mentions_move": true,
+      "answer_length": 53
+    },
+    {
+      "id": "italian_development",
+      "theme": "opening",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
+      "engine": "stockfish",
+      "best_move_uci": "g8f6",
+      "legal": true,
+      "answer_mentions_move": true,
+      "answer_length": 46
+    },
+    {
+      "id": "queens_gambit",
+      "theme": "opening",
+      "fen": "rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR b KQkq c3 0 2",
+      "engine": "stockfish",
+      "best_move_uci": "d5c4",
+      "legal": true,
+      "answer_mentions_move": true,
+      "answer_length": 46
+    },
+    {
+      "id": "king_safety",
+      "theme": "king_safety",
+      "fen": "r1bq1rk1/ppp2ppp/2nbpn2/3p4/2PP4/2N1PN2/PPQ1BPPP/R1B1K2R w KQ - 4 8",
+      "engine": "stockfish",
+      "best_move_uci": "c4c5",
+      "legal": true,
+      "answer_mentions_move": true,
+      "answer_length": 53
+    },
+    {
+      "id": "isolated_queen_pawn",
+      "theme": "structure",
+      "fen": "r2q1rk1/pp2bppp/2n1bn2/2pp4/3P4/2PBPN2/PP3PPP/RNBQ1RK1 w - - 2 9",
+      "engine": "stockfish",
+      "best_move_uci": "b2b3",
+      "legal": true,
+      "answer_mentions_move": true,
+      "answer_length": 59
+    },
+    {
+      "id": "rook_endgame",
+      "theme": "endgame",
+      "fen": "8/5pk1/6p1/8/4P3/5P2/5KPP/8 w - - 0 38",
+      "engine": "stockfish",
+      "best_move_uci": "f2g3",
+      "legal": true,
+      "answer_mentions_move": true,
+      "answer_length": 61
+    },
+    {
+      "id": "tactical_pressure",
+      "theme": "tactics",
+      "fen": "r2q1rk1/ppp2ppp/2n2n2/2bpp3/2B1P3/2NP1N2/PPP2PPP/R1BQ1RK1 w - - 4 8",
+      "engine": "stockfish",
+      "best_move_uci": "c4b3",
+      "legal": true,
+      "answer_mentions_move": true,
+      "answer_length": 64
+    },
+    {
+      "id": "defensive_choice",
+      "theme": "defense",
+      "fen": "2r2rk1/pp2qppp/2n1bn2/3pp3/3P4/2PBPN2/PPQ2PPP/RNB2RK1 b - - 1 12",
+      "engine": "stockfish",
+      "best_move_uci": "e5e4",
+      "legal": true,
+      "answer_mentions_move": true,
+      "answer_length": 51
+    },
+    {
+      "id": "promotion_race",
+      "theme": "endgame",
+      "fen": "8/P5k1/8/8/8/8/5K2/8 w - - 0 1",
+      "engine": "stockfish",
+      "best_move_uci": "f2f3",
+      "legal": true,
+      "answer_mentions_move": true,
+      "answer_length": 61
+    },
+    {
+      "id": "back_rank",
+      "theme": "tactics",
+      "fen": "6k1/5ppp/8/8/8/8/5PPP/5RK1 w - - 0 1",
+      "engine": "stockfish",
+      "best_move_uci": "g2g4",
+      "legal": true,
+      "answer_mentions_move": true,
+      "answer_length": 61
+    },
+    {
+      "id": "sicilian_center",
+      "theme": "opening",
+      "fen": "rnbqkb1r/pp3ppp/2p2n2/3pp3/4P3/2N2N2/PPPP1PPP/R1BQKB1R w KQkq d6 0 5",
+      "engine": "stockfish",
+      "best_move_uci": "d2d4",
+      "legal": true,
+      "answer_mentions_move": true,
+      "answer_length": 47
+    },
+    {
+      "id": "carlsbad_structure",
+      "theme": "structure",
+      "fen": "r2q1rk1/pp2bppp/2n1pn2/2pp4/3P4/2PBPN2/PP1NBPPP/R2Q1RK1 w - - 4 10",
+      "engine": "stockfish",
+      "best_move_uci": "d4c5",
+      "legal": true,
+      "answer_mentions_move": true,
+      "answer_length": 61
+    },
+    {
+      "id": "king_attack",
+      "theme": "attack",
+      "fen": "r1bq1rk1/ppp2ppp/2n2n2/2bpp3/2B1P3/2NP1N1P/PPP2PP1/R1BQ1RK1 w - - 0 8",
+      "engine": "stockfish",
+      "best_move_uci": "e4d5",
+      "legal": true,
+      "answer_mentions_move": true,
+      "answer_length": 53
+    },
+    {
+      "id": "minor_piece_endgame",
+      "theme": "endgame",
+      "fen": "8/5pk1/5np1/4p3/4P3/5PN1/5KPP/8 w - - 2 35",
+      "engine": "stockfish",
+      "best_move_uci": "g3f1",
+      "legal": true,
+      "answer_mentions_move": true,
+      "answer_length": 61
+    }
+  ],
+  "image_cases": [
+    {
+      "id": "starting_position",
+      "image": "examples/chess_assistant/evals/images/starting_position.png",
+      "expected_board": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",
+      "parsed_board": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",
+      "confidence": 1.0,
+      "roundtrip_ok": true
+    },
+    {
+      "id": "italian_development",
+      "image": "examples/chess_assistant/evals/images/italian_development.png",
+      "expected_board": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R",
+      "parsed_board": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R",
+      "confidence": 1.0,
+      "roundtrip_ok": true
+    },
+    {
+      "id": "queens_gambit",
+      "image": "examples/chess_assistant/evals/images/queens_gambit.png",
+      "expected_board": "rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR",
+      "parsed_board": "rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR",
+      "confidence": 1.0,
+      "roundtrip_ok": true
+    },
+    {
+      "id": "king_safety",
+      "image": "examples/chess_assistant/evals/images/king_safety.png",
+      "expected_board": "r1bq1rk1/ppp2ppp/2nbpn2/3p4/2PP4/2N1PN2/PPQ1BPPP/R1B1K2R",
+      "parsed_board": "r1bq1rk1/ppp2ppp/2nbpn2/3p4/2PP4/2N1PN2/PPQ1BPPP/R1B1K2R",
+      "confidence": 1.0,
+      "roundtrip_ok": true
+    }
+  ]
+}

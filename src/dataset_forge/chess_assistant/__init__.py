@@ -1,4 +1,4 @@
-"""Small transformer-oriented chess assistant example."""
+"""Transformer-oriented chess assistant example."""
 
 from dataset_forge.chess_assistant.orchestrator import ChessAssistant, ChessAssistantResponse
 

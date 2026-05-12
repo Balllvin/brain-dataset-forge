@@ -1,0 +1,55 @@
+{
+  "dataset_sources": [
+    "curated FEN seed positions",
+    "deterministic python-chess self-play positions",
+    "Stockfish principal variations",
+    "Hugging Face Lichess/chess-puzzles was reviewed as the larger external puzzle source"
+  ],
+  "engines": {
+    "stockfish": 2500
+  },
+  "meets_minimum": true,
+  "minimum_required_rows": 1000,
+  "question_types": {
+    "best_move": 125,
+    "blunder_check": 125,
+    "candidate": 125,
+    "coach": 125,
+    "conversion": 125,
+    "defense": 125,
+    "endgame": 125,
+    "eval": 125,
+    "followup": 125,
+    "human": 125,
+    "losing_reason": 125,
+    "mistake": 125,
+    "opening": 125,
+    "plan": 125,
+    "position_read": 125,
+    "practical": 125,
+    "short": 125,
+    "tactics": 125,
+    "threat": 125,
+    "uci": 125
+  },
+  "recommended_base_model": "HuggingFaceTB/SmolLM2-360M-Instruct",
+  "requested_rows": 2500,
+  "rows": 2500,
+  "splits": {
+    "eval": 250,
+    "train": 2250
+  },
+  "teacher": "Stockfish when available, otherwise explicit simple-tactical fallback",
+  "themes": {
+    "attack": 1,
+    "conversion": 141,
+    "defense": 274,
+    "endgame": 105,
+    "king_safety": 1,
+    "middlegame": 25,
+    "opening": 1084,
+    "structure": 2,
+    "tactics": 867
+  },
+  "unique_fens": 2500
+}

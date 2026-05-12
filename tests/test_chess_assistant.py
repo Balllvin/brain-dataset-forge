@@ -12,6 +12,7 @@ from dataset_forge.chess_assistant.eval import run_chess_eval
 from dataset_forge.chess_assistant.language import acceptable_transformer_answer
 from dataset_forge.chess_assistant.orchestrator import ChessAssistant, ChessAssistantConfig
 from dataset_forge.chess_assistant.vision import image_to_fen, render_board
+from dataset_forge.chess_assistant.web_app import _handle_move
 
 
 def test_seed_positions_are_valid() -> None:
@@ -49,7 +50,11 @@ def test_dataset_and_eval_generation(tmp_path: Path) -> None:
     records = [json.loads(line) for line in files["sft"].read_text(encoding="utf-8").splitlines()]
     assert len(records) == 12
     assert records[0]["messages"][0]["role"] == "system"
+    assert records[0]["metadata"]["legal_move_count"] > 0
     assert files["eval_suite"].exists()
+    manifest = json.loads(files["manifest"].read_text(encoding="utf-8"))
+    assert manifest["rows"] == 12
+    assert manifest["unique_fens"] == 12
 
     report = run_chess_eval(tmp_path / "eval", engine_config=ChessEngineConfig(engine_path="", depth=2))
     assert report["legal_move_rate"] == 1.0
@@ -65,9 +70,20 @@ def test_chess_cli_ask_outputs_json(capsys) -> None:
     assert payload["fen"] == chess.STARTING_FEN
 
 
+def test_web_move_endpoint_plays_user_and_assistant_moves() -> None:
+    assistant = ChessAssistant(ChessAssistantConfig(engine=ChessEngineConfig(engine_path="", depth=2)))
+    payload = _handle_move({"fen": chess.STARTING_FEN, "move": "e2e4"}, assistant)
+    assert payload["played"]["user_move_uci"] == "e2e4"
+    assert payload["played"]["assistant_move_uci"]
+    assert payload["fen"] != chess.STARTING_FEN
+    assert payload["status"] == "active"
+
+
 def test_transformer_answer_gate_rejects_repetitive_ungrounded_text() -> None:
     line = analyse_fen(chess.STARTING_FEN, ChessEngineConfig(engine_path="", depth=2))
     bad = "The pawn is best because the pawn is best because the pawn is best because the pawn is best."
+    leaked = f"{line.best_move_uci}\nQuestion: What should I play?\nFEN: {chess.STARTING_FEN}\nLegal moves: e2e4"
     good = f"The best move is {line.best_move_san} ({line.best_move_uci}) because it develops a piece and keeps every move legal."
     assert acceptable_transformer_answer(bad, line) is False
+    assert acceptable_transformer_answer(leaked, line) is False
     assert acceptable_transformer_answer(good, line) is True

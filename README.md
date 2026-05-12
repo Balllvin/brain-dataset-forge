@@ -13,7 +13,7 @@ The core package has no heavy runtime dependency. Optional integrations are docu
 - Scores examples for duplication, coverage, source-copy risk, weak answers, schema issues, and train/eval leakage.
 - Produces a deficiency plan that tells the next generation pass what data is missing.
 - Supports model routing for cheap, medium, and expensive judge/generator roles.
-- Includes a chess assistant example with image-to-FEN, Stockfish-backed analysis, generated SFT/eval data, and a small-transformer LoRA training path.
+- Includes a chess assistant example with a playable board/chat UI, image-to-FEN, audio question input, Stockfish-backed analysis, 2,500 generated SFT/eval rows, Elo benchmarking, and a transformer LoRA training path.
 
 ## Quick Start
 
@@ -40,9 +40,10 @@ python -m pip install -e ".[dev]"
 brew install stockfish
 dataset-forge-chess ask --fen "startpos" --question "What should I play and why?"
 dataset-forge-chess serve --port 8766
+dataset-forge-chess elo --output-dir outputs/chess_eval --opponent-elo 2000 --games 4 --require-stockfish
 ```
 
-The chess assistant appears as one tool to the user, but internally uses a vision agent, rules agent, engine agent, and optional small-transformer language adapter. See [examples/chess_assistant/README.md](examples/chess_assistant/README.md) and [docs/chess-assistant-research.md](docs/chess-assistant-research.md).
+The chess assistant appears as one tool to the user, but internally uses a vision agent, rules agent, engine agent, and optional transformer language adapter. The committed benchmark report clears the 2000-profile floor for the deployed move policy. See [examples/chess_assistant/README.md](examples/chess_assistant/README.md) and [docs/chess-assistant-research.md](docs/chess-assistant-research.md).
 
 ## OpenCode Go Routing
 

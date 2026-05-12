@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-DEFAULT_BASE_MODEL = "HuggingFaceTB/SmolLM2-135M-Instruct"
+DEFAULT_BASE_MODEL = "HuggingFaceTB/SmolLM2-360M-Instruct"
 
 
 def write_training_plan(
@@ -19,7 +19,7 @@ def write_training_plan(
         "dataset": str(dataset_path),
         "output_adapter": str(output_dir),
         "method": "LoRA SFT over engine-grounded chess assistant messages",
-        "memory_target": "Designed for a laptop run: CPU or MPS, small base model, short sequences, low-rank adapter.",
+        "memory_target": "Designed for a laptop run: CPU or MPS, laptop-sized base model, short sequences, low-rank adapter.",
         "max_steps": max_steps,
         "lora_rank": lora_rank,
         "runtime_command": (
@@ -90,7 +90,7 @@ def train_lora_adapter(
         gradient_accumulation_steps=4,
         learning_rate=2e-4,
         logging_steps=10,
-        save_steps=max_steps,
+        save_strategy="no",
         report_to=[],
         remove_unused_columns=False,
     )
@@ -102,6 +102,5 @@ def train_lora_adapter(
     )
     trainer.train()
     model.save_pretrained(output_dir)
-    tokenizer.save_pretrained(output_dir)
     write_training_plan(dataset_path, output_dir, base_model=base_model, max_steps=max_steps, lora_rank=lora_rank)
     return output_dir
