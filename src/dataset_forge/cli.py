@@ -6,6 +6,13 @@ import sys
 from pathlib import Path
 
 from dataset_forge.config import ConfigError
+from dataset_forge.chess_assistant.cli import (
+    add_engine_args,
+    add_language_args,
+    engine_config_from_args,
+    language_config_from_args,
+)
+from dataset_forge.chess_assistant.web_app import serve_chess_assistant
 from dataset_forge.iterate import run_lab
 from dataset_forge.llm import LlmCallError
 from dataset_forge.models import DatasetExample
@@ -29,6 +36,8 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "serve":
             serve_report(Path(args.run_dir), host=args.host, port=args.port)
             return 0
+        if args.command == "playground":
+            return _playground_command(args)
         parser.print_help()
         return 2
     except (AuditInputError, ConfigError, FileNotFoundError, GenerationError, LlmCallError) as error:
@@ -55,6 +64,13 @@ def build_parser() -> argparse.ArgumentParser:
     serve.add_argument("--run-dir", required=True, help="Run directory containing report/index.html.")
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", type=int, default=8765)
+
+    playground = subparsers.add_parser("playground", help="Serve a local model-testing playground.")
+    playground.add_argument("environment", choices=["chess"], help="Playground environment to run.")
+    playground.add_argument("--host", default="127.0.0.1")
+    playground.add_argument("--port", type=int, default=8766)
+    add_engine_args(playground)
+    add_language_args(playground)
     return parser
 
 
@@ -89,6 +105,19 @@ def _audit_command(args: argparse.Namespace) -> int:
     output.write_text(json.dumps(report.to_record(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps({"score": report.score, "examples": report.total_examples, "output": str(output)}, sort_keys=True))
     return 0
+
+
+def _playground_command(args: argparse.Namespace) -> int:
+    if args.environment == "chess":
+        serve_chess_assistant(
+            host=args.host,
+            port=args.port,
+            engine_config=engine_config_from_args(args),
+            language_config=language_config_from_args(args),
+            use_transformer=args.use_transformer,
+        )
+        return 0
+    raise ConfigError(f"Unknown playground environment: {args.environment}")
 
 
 def _example_from_messages_record(payload: dict[str, object], line_number: int) -> DatasetExample:

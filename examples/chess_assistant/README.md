@@ -54,12 +54,13 @@ For photos or arbitrary screenshots, use a clean top-down crop. Image-only chess
 
 ```bash
 dataset-forge-chess serve --port 8766
+dataset-forge playground chess --port 8766
 ```
 
 Open `http://127.0.0.1:8766`. The browser environment includes:
 
-- Auto match: the assistant plays Stockfish automatically, defaults to one move every two seconds, supports pause/reset, and produces a post-game review with played moves, banned move attempts, result, and rating estimate.
-- Play Stockfish: drag pieces on the board, get the assistant reply, and collect illegal drops as banned moves.
+- Auto match: the assistant plays Stockfish automatically, defaults to one move every two seconds, supports pause/reset, and produces a post-game review with played moves, invalid move attempts, result, and rating estimate.
+- Play Stockfish: drag pieces on the board, get the assistant reply, and collect illegal drops separately from network or server failures.
 - Coach: ask follow-up questions about the active game state, including browser speech recognition when available.
 - Image: upload a clean top-down board image, convert it to FEN, and ask follow-up questions from that position.
 - Review: inspect the current game or a sample game with move list, captures, checks, banned moves, and rating estimate.

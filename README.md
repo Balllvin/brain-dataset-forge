@@ -40,10 +40,13 @@ python -m pip install -e ".[dev]"
 brew install stockfish
 dataset-forge-chess ask --fen "startpos" --question "What should I play and why?"
 dataset-forge-chess serve --port 8766
+dataset-forge playground chess --port 8766
 dataset-forge-chess elo --output-dir outputs/chess_eval --opponent-elo 2000 --games 4 --require-stockfish
 ```
 
 The chess assistant appears as one tool to the user, but internally uses a vision agent, rules agent, engine agent, and optional transformer language adapter. The browser playground includes automatic assistant-vs-Stockfish matches, drag-to-move play, coach chat, image questions, review stats, and crash checks. The committed benchmark report clears the 2000-profile floor for the deployed move policy. See [examples/chess_assistant/README.md](examples/chess_assistant/README.md) and [docs/chess-assistant-research.md](docs/chess-assistant-research.md).
+
+Playground design rules for adding new model-testing environments are in [docs/environment-playgrounds.md](docs/environment-playgrounds.md).
 
 ## OpenCode Go Routing
 

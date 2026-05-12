@@ -77,6 +77,7 @@ def test_web_move_endpoint_plays_user_and_assistant_moves() -> None:
     assert payload["played"]["assistant_move_uci"]
     assert payload["fen"] != chess.STARTING_FEN
     assert payload["status"] == "active"
+    assert "engine" not in payload["answer"].lower()
 
 
 def test_auto_match_step_and_review_stats() -> None:
@@ -100,6 +101,15 @@ def test_auto_match_step_and_review_stats() -> None:
     assert review["banned_moves"][0]["move"] == "e2e5"
     assert review["estimated_rating"] == 2000
     assert "banned move attempts" in review["summary"]
+
+
+def test_main_cli_includes_chess_playground() -> None:
+    from dataset_forge.cli import build_parser
+
+    args = build_parser().parse_args(["playground", "chess", "--port", "8766"])
+    assert args.command == "playground"
+    assert args.environment == "chess"
+    assert args.port == 8766
 
 
 def test_transformer_answer_gate_rejects_repetitive_ungrounded_text() -> None:
