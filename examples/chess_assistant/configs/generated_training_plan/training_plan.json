@@ -1,0 +1,10 @@
+{
+  "base_model": "HuggingFaceTB/SmolLM2-135M-Instruct",
+  "dataset": "examples/chess_assistant/data/chess_assistant_sft.jsonl",
+  "output_adapter": "examples/chess_assistant/configs/generated_training_plan",
+  "method": "LoRA SFT over engine-grounded chess assistant messages",
+  "memory_target": "Designed for a laptop run: CPU or MPS, small base model, short sequences, low-rank adapter.",
+  "max_steps": 80,
+  "lora_rank": 8,
+  "runtime_command": "python -m dataset_forge.chess_assistant.cli train --dataset examples/chess_assistant/data/chess_assistant_sft.jsonl --output examples/chess_assistant/configs/generated_training_plan --base-model HuggingFaceTB/SmolLM2-135M-Instruct"
+}

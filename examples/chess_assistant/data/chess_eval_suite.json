@@ -1,0 +1,114 @@
+{
+  "name": "chess assistant legality and explanation eval",
+  "cases": [
+    {
+      "id": "chess-assistant-0001",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "must_include": [
+        "d2d4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    },
+    {
+      "id": "chess-assistant-0006",
+      "fen": "8/5pk1/6p1/8/4P3/5P2/5KPP/8 w - - 0 38",
+      "must_include": [
+        "f2g3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 8/5pk1/6p1/8/4P3/5P2/5KPP/8 w - - 0 38"
+    },
+    {
+      "id": "chess-assistant-0011",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "must_include": [
+        "d2d4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    },
+    {
+      "id": "chess-assistant-0016",
+      "fen": "8/5pk1/6p1/8/4P3/5P2/5KPP/8 w - - 0 38",
+      "must_include": [
+        "f2g3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 8/5pk1/6p1/8/4P3/5P2/5KPP/8 w - - 0 38"
+    },
+    {
+      "id": "chess-assistant-0021",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "must_include": [
+        "d2d4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    },
+    {
+      "id": "chess-assistant-0026",
+      "fen": "8/5pk1/6p1/8/4P3/5P2/5KPP/8 w - - 0 38",
+      "must_include": [
+        "f2g3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 8/5pk1/6p1/8/4P3/5P2/5KPP/8 w - - 0 38"
+    },
+    {
+      "id": "chess-assistant-0031",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "must_include": [
+        "d2d4",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    },
+    {
+      "id": "chess-assistant-0036",
+      "fen": "8/5pk1/6p1/8/4P3/5P2/5KPP/8 w - - 0 38",
+      "must_include": [
+        "f2g3",
+        "legal"
+      ],
+      "must_not_include": [
+        "I cannot tell",
+        "any move is fine"
+      ],
+      "question": "What is the best move in this position, and why?\nFEN: 8/5pk1/6p1/8/4P3/5P2/5KPP/8 w - - 0 38"
+    }
+  ],
+  "metrics": [
+    "legal_best_move_mentioned",
+    "no_illegal_move_claim",
+    "engine_grounded_reason"
+  ]
+}

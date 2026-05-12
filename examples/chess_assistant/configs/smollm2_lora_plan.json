@@ -1,0 +1,10 @@
+{
+  "base_model": "HuggingFaceTB/SmolLM2-135M-Instruct",
+  "adapter_method": "LoRA",
+  "target_modules": ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+  "rank": 8,
+  "max_sequence_length": 768,
+  "max_steps": 80,
+  "role": "Language explanation adapter grounded in FEN, legal moves, Stockfish line, and assistant response rubric",
+  "runtime_memory_goal": "Under 4 GB with CPU or Apple MPS by using a 135M parameter base model and low-rank adapter"
+}

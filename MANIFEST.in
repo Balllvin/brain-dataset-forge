@@ -4,5 +4,5 @@ include package.json
 include package-lock.json
 recursive-include .github *.yml
 recursive-include docs *.md
-recursive-include examples *.json
+recursive-include examples *.json *.jsonl *.md *.png *.safetensors
 recursive-include scripts *.py *.js

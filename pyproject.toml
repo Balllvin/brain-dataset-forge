@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
 authors = [{ name = "Brain Dataset Forge contributors" }]
-dependencies = []
+dependencies = ["chess>=1.11", "pillow>=10.0"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]
@@ -19,9 +19,11 @@ quality = ["datasketch>=1.6", "sentence-transformers>=3.0"]
 synthetic = ["distilabel>=1.5"]
 tinker = ["tinker-cookbook"]
 web = ["playwright>=1.45"]
+chess-train = ["torch>=2.5", "transformers>=4.45", "datasets>=3.0", "peft>=0.13", "accelerate>=0.34"]
 
 [project.scripts]
 dataset-forge = "dataset_forge.cli:main"
+dataset-forge-chess = "dataset_forge.chess_assistant.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
