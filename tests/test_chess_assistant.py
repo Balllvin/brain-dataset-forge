@@ -12,7 +12,7 @@ from dataset_forge.chess_assistant.eval import run_chess_eval
 from dataset_forge.chess_assistant.language import acceptable_transformer_answer
 from dataset_forge.chess_assistant.orchestrator import ChessAssistant, ChessAssistantConfig
 from dataset_forge.chess_assistant.vision import image_to_fen, render_board
-from dataset_forge.chess_assistant.web_app import _handle_move
+from dataset_forge.chess_assistant.web_app import _handle_engine_step, _handle_move, _handle_review_game
 
 
 def test_seed_positions_are_valid() -> None:
@@ -77,6 +77,29 @@ def test_web_move_endpoint_plays_user_and_assistant_moves() -> None:
     assert payload["played"]["assistant_move_uci"]
     assert payload["fen"] != chess.STARTING_FEN
     assert payload["status"] == "active"
+
+
+def test_auto_match_step_and_review_stats() -> None:
+    assistant = ChessAssistant(ChessAssistantConfig(engine=ChessEngineConfig(engine_path="", depth=2)))
+    first = _handle_engine_step({"fen": chess.STARTING_FEN, "actor": "assistant"}, assistant)
+    second = _handle_engine_step({"fen": first["fen"], "actor": "stockfish", "opponent_elo": 2000}, assistant)
+
+    review = _handle_review_game(
+        {
+            "moves": [first["played"], second["played"]],
+            "illegal_attempts": [{"move": "e2e5", "reason": "Illegal move for position"}],
+            "opponent_elo": 2000,
+            "assistant_color": "white",
+        }
+    )
+
+    assert chess.Move.from_uci(first["played"]["move_uci"]) in chess.Board(chess.STARTING_FEN).legal_moves
+    assert second["played"]["actor"] == "stockfish"
+    assert review["plies"] == 2
+    assert review["illegal_attempt_count"] == 1
+    assert review["banned_moves"][0]["move"] == "e2e5"
+    assert review["estimated_rating"] == 2000
+    assert "banned move attempts" in review["summary"]
 
 
 def test_transformer_answer_gate_rejects_repetitive_ungrounded_text() -> None:

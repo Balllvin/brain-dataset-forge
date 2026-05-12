@@ -58,11 +58,12 @@ dataset-forge-chess serve --port 8766
 
 Open `http://127.0.0.1:8766`. The browser environment includes:
 
-- clickable chess board with SAN/UCI move entry
-- assistant reply move after the user plays
-- chat tied to the current board state
-- image upload that turns a clean board image into FEN
-- microphone button that uses browser speech recognition for audio questions when the browser supports it
+- Auto match: the assistant plays Stockfish automatically, defaults to one move every two seconds, supports pause/reset, and produces a post-game review with played moves, banned move attempts, result, and rating estimate.
+- Play Stockfish: drag pieces on the board, get the assistant reply, and collect illegal drops as banned moves.
+- Coach: ask follow-up questions about the active game state, including browser speech recognition when available.
+- Image: upload a clean top-down board image, convert it to FEN, and ask follow-up questions from that position.
+- Review: inspect the current game or a sample game with move list, captures, checks, banned moves, and rating estimate.
+- Crash lab: send bad FEN and illegal moves to verify failures stay contained and the app recovers.
 
 ## Generate Data
 

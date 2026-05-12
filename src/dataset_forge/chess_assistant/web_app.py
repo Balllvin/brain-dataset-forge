@@ -53,6 +53,10 @@ def serve_chess_assistant(
                     response = _handle_ask(payload, assistant)
                 elif self.path == "/api/move":
                     response = _handle_move(payload, assistant)
+                elif self.path == "/api/engine-step":
+                    response = _handle_engine_step(payload, assistant)
+                elif self.path == "/api/review-game":
+                    response = _handle_review_game(payload)
                 elif self.path == "/api/reset":
                     response = _state_payload(START_FEN)
                 else:
@@ -133,8 +137,7 @@ def _handle_move(payload: dict[str, Any], assistant: ChessAssistant) -> dict[str
         assistant_uci = assistant_move.uci()
         board.push(assistant_move)
 
-    question = "Explain the current position after the last move."
-    response = assistant.answer(question, fen=board.fen())
+    response = assistant.answer("Explain the current position after the last move.", fen=board.fen())
     record = response.to_record()
     record.update(_state_payload(board.fen()))
     record["played"] = {
@@ -146,6 +149,102 @@ def _handle_move(payload: dict[str, Any], assistant: ChessAssistant) -> dict[str
     return record
 
 
+def _handle_engine_step(payload: dict[str, Any], assistant: ChessAssistant) -> dict[str, Any]:
+    fen = str(payload.get("fen") or START_FEN).strip()
+    board = board_from_fen(fen)
+    if board.is_game_over(claim_draw=True):
+        return _state_payload(board.fen()) | {"game_over": True}
+
+    actor = str(payload.get("actor") or ("assistant" if board.turn == chess.WHITE else "stockfish"))
+    opponent_elo = int(payload.get("opponent_elo") or 2000)
+    config = _actor_config(actor, assistant.config.engine, opponent_elo)
+    line = analyse_fen(board.fen(), config)
+    move = chess.Move.from_uci(line.best_move_uci)
+    if move not in board.legal_moves:
+        raise RuntimeError(f"{actor} returned illegal move {line.best_move_uci}")
+    played = {
+        "actor": actor,
+        "move_san": board.san(move),
+        "move_uci": move.uci(),
+        "score_cp": line.score_cp,
+        "best_move_uci": line.best_move_uci,
+        "best_move_san": line.best_move_san,
+    }
+    board.push(move)
+    state = _state_payload(board.fen())
+    state["played"] = played
+    state["game_over"] = board.is_game_over(claim_draw=True)
+    state["result"] = board.result(claim_draw=True)
+    return state
+
+
+def _handle_review_game(payload: dict[str, Any]) -> dict[str, Any]:
+    moves = payload.get("moves") or []
+    illegal_attempts = payload.get("illegal_attempts") or []
+    if not isinstance(moves, list):
+        raise ValueError("moves must be a list.")
+    if not isinstance(illegal_attempts, list):
+        raise ValueError("illegal_attempts must be a list.")
+
+    board = chess.Board()
+    captures = 0
+    checks = 0
+    replayed: list[dict[str, object]] = []
+    for index, item in enumerate(moves, start=1):
+        if not isinstance(item, dict):
+            raise ValueError(f"move {index} must be an object.")
+        move_uci = str(item.get("move_uci") or "")
+        move = chess.Move.from_uci(move_uci)
+        if move not in board.legal_moves:
+            raise ChessInputError(f"Move {index} is illegal for replay: {move_uci}")
+        san = board.san(move)
+        capture = board.is_capture(move)
+        board.push(move)
+        captures += 1 if capture else 0
+        checks += 1 if board.is_check() else 0
+        replayed.append(
+            {
+                "ply": index,
+                "actor": str(item.get("actor") or _side_name(not board.turn)),
+                "move_san": san,
+                "move_uci": move_uci,
+                "score_cp": item.get("score_cp"),
+            }
+        )
+
+    result = board.result(claim_draw=True)
+    assistant_color = chess.WHITE if str(payload.get("assistant_color") or "white") == "white" else chess.BLACK
+    score = _assistant_score_from_result(result, assistant_color)
+    return {
+        "result": result,
+        "final_fen": board.fen(),
+        "plies": len(replayed),
+        "moves": replayed,
+        "captures": captures,
+        "checks": checks,
+        "illegal_attempt_count": len(illegal_attempts),
+        "banned_moves": illegal_attempts,
+        "assistant_score": score,
+        "estimated_rating": _single_game_rating(score, int(payload.get("opponent_elo") or 2000)),
+        "summary": _review_summary(result, len(replayed), captures, checks, len(illegal_attempts), score),
+    }
+
+
+def _actor_config(actor: str, base: ChessEngineConfig, opponent_elo: int) -> ChessEngineConfig:
+    if actor == "stockfish":
+        return ChessEngineConfig(
+            engine_path=base.engine_path,
+            time_limit=base.time_limit,
+            depth=base.depth,
+            hash_mb=base.hash_mb,
+            threads=base.threads,
+            require_engine=base.require_engine,
+            limit_strength=True,
+            uci_elo=opponent_elo,
+        )
+    return base
+
+
 def _state_payload(fen: str) -> dict[str, Any]:
     board = board_from_fen(fen)
     position = describe_position(board)
@@ -154,6 +253,7 @@ def _state_payload(fen: str) -> dict[str, Any]:
         "turn": position.side_to_move,
         "status": position.status,
         "legal_moves": position.legal_moves,
+        "result": board.result(claim_draw=True),
     }
 
 
@@ -170,6 +270,33 @@ def _parse_move(board: chess.Board, move_text: str) -> chess.Move:
     return move
 
 
+def _assistant_score_from_result(result: str, assistant_color: chess.Color) -> float:
+    if result == "1-0":
+        return 1.0 if assistant_color == chess.WHITE else 0.0
+    if result == "1/2-1/2":
+        return 0.5
+    if result == "0-1":
+        return 1.0 if assistant_color == chess.BLACK else 0.0
+    return 0.5
+
+
+def _single_game_rating(score: float, opponent_elo: int) -> int:
+    if score >= 1:
+        return opponent_elo + 200
+    if score <= 0:
+        return opponent_elo - 200
+    return opponent_elo
+
+
+def _review_summary(result: str, plies: int, captures: int, checks: int, banned: int, score: float) -> str:
+    rating_text = "won" if score == 1 else "drew" if score == 0.5 else "lost"
+    return f"Assistant {rating_text} ({result}) over {plies} plies with {captures} captures, {checks} checks, and {banned} banned move attempts."
+
+
+def _side_name(color: chess.Color) -> str:
+    return "white" if color == chess.WHITE else "black"
+
+
 def _decode_image_data(value: str) -> bytes:
     if "," in value and value.startswith("data:"):
         value = value.split(",", 1)[1]
@@ -181,314 +308,484 @@ CHESS_HTML = """<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Chess Assistant</title>
+  <title>Chess Playground</title>
   <style>
     :root {
       color-scheme: light;
-      --bg: #f5f2eb;
+      --bg: #f4f1ea;
       --panel: #fffdf8;
-      --ink: #141414;
-      --muted: #686157;
-      --line: #d9d0c1;
-      --green: #1e5b4f;
-      --green-2: #2f7d6c;
-      --amber: #c9902e;
+      --ink: #151515;
+      --muted: #665f55;
+      --line: #d6cbbb;
+      --green: #1f6658;
+      --red: #9d1c1c;
+      --light-square: #efe3cb;
       --dark-square: #8fa37d;
-      --light-square: #ece2ce;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
     * { box-sizing: border-box; }
     body { margin: 0; background: var(--bg); color: var(--ink); }
-    main { max-width: 1360px; margin: 0 auto; padding: 22px; display: grid; gap: 16px; }
-    header { display: flex; align-items: end; justify-content: space-between; gap: 14px; border-bottom: 1px solid var(--line); padding-bottom: 14px; }
-    h1 { margin: 0; font-size: 30px; line-height: 1.05; letter-spacing: 0; }
-    .status { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
-    .chip { border: 1px solid var(--line); background: #f2eadb; border-radius: 999px; padding: 6px 9px; font-size: 12px; font-weight: 800; }
-    .layout { display: grid; grid-template-columns: minmax(310px, 0.86fr) minmax(390px, 1.12fr) minmax(330px, 0.9fr); gap: 16px; align-items: start; }
-    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 12px 34px rgba(23, 20, 17, 0.08); }
-    .board-panel { padding: 14px; }
-    .board-shell { width: min(100%, 620px); margin: 0 auto; display: grid; gap: 10px; }
-    .board { display: grid; grid-template-columns: repeat(8, 1fr); aspect-ratio: 1; border: 2px solid #332f2a; border-radius: 6px; overflow: hidden; background: #332f2a; }
-    .square { position: relative; display: grid; place-items: center; min-width: 0; border: 0; padding: 0; color: #151515; font-size: clamp(26px, 5.2vw, 56px); line-height: 1; cursor: pointer; }
-    .piece { position: relative; z-index: 1; }
-    .piece.white { color: #fff8e8; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65); -webkit-text-stroke: 0.7px rgba(0, 0, 0, 0.55); }
-    .piece.black { color: #11100d; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.24); }
+    main { max-width: 1420px; margin: 0 auto; padding: 16px; display: grid; gap: 12px; }
+    nav { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; }
+    nav button { white-space: nowrap; background: #e5dccd; color: #171410; border: 1px solid #c9bca9; }
+    nav button.active { background: var(--green); color: white; border-color: var(--green); }
+    button { appearance: none; border: 0; border-radius: 6px; background: var(--green); color: white; padding: 10px 12px; font-weight: 800; cursor: pointer; }
+    button.secondary { background: #e5dccd; color: #171410; border: 1px solid #c9bca9; }
+    button.danger { background: var(--red); }
+    button:disabled { opacity: 0.55; cursor: wait; }
+    input, textarea, select { width: 100%; border: 1px solid #b9ad9a; border-radius: 6px; padding: 9px; font: inherit; background: white; color: var(--ink); }
+    textarea { min-height: 110px; resize: vertical; }
+    label { display: grid; gap: 6px; font-size: 12px; font-weight: 800; color: #312c25; text-transform: uppercase; letter-spacing: 0; }
+    .page { display: none; }
+    .page.active { display: grid; gap: 12px; }
+    .grid { display: grid; grid-template-columns: minmax(320px, 0.78fr) minmax(360px, 1fr) minmax(320px, 0.85fr); gap: 12px; align-items: start; }
+    .two { display: grid; grid-template-columns: minmax(330px, 0.9fr) minmax(360px, 1fr); gap: 12px; align-items: start; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px; box-shadow: 0 10px 28px rgba(22, 18, 14, 0.07); }
+    .board { display: grid; grid-template-columns: repeat(8, 1fr); aspect-ratio: 1; border: 2px solid #2d2923; border-radius: 6px; overflow: hidden; background: #2d2923; }
+    .square { position: relative; display: grid; place-items: center; border: 0; padding: 0; min-width: 0; font-size: clamp(28px, 5.1vw, 56px); line-height: 1; cursor: grab; }
     .square.light { background: var(--light-square); }
     .square.dark { background: var(--dark-square); }
-    .square.selected { outline: 4px solid var(--amber); outline-offset: -4px; }
-    .square.last { box-shadow: inset 0 0 0 4px rgba(30, 91, 79, 0.35); }
-    .coord { position: absolute; left: 5px; bottom: 4px; color: rgba(20, 20, 20, 0.48); font-size: 10px; font-weight: 800; }
-    .controls, .chat, .uploads { padding: 16px; display: grid; gap: 13px; }
-    label { display: grid; gap: 7px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0; color: #302c27; }
-    textarea, input, select { width: 100%; border: 1px solid #bdb4a4; border-radius: 6px; padding: 10px; font: inherit; background: #fff; color: var(--ink); }
-    textarea { min-height: 82px; resize: vertical; }
-    button { appearance: none; border: 0; border-radius: 6px; background: var(--green); color: white; padding: 11px 13px; font-weight: 850; cursor: pointer; }
-    button.secondary { background: #e7decd; color: #181511; border: 1px solid #cabfac; }
-    button.icon { width: 42px; height: 42px; padding: 0; display: grid; place-items: center; font-size: 18px; }
-    button:disabled { opacity: 0.58; cursor: wait; }
+    .square.last { box-shadow: inset 0 0 0 4px rgba(31, 102, 88, 0.38); }
+    .square.dragging { outline: 4px solid #c9902e; outline-offset: -4px; }
+    .piece { z-index: 1; user-select: none; }
+    .piece.white { color: #fff8e8; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7); -webkit-text-stroke: 0.7px rgba(0, 0, 0, 0.55); }
+    .piece.black { color: #11100d; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.24); }
+    .coord { position: absolute; left: 5px; bottom: 4px; color: rgba(20,20,20,0.45); font-size: 10px; font-weight: 800; }
     .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .command-row { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: end; }
-    .chat-log { min-height: 420px; max-height: 62vh; overflow: auto; display: grid; align-content: start; gap: 10px; padding: 16px; border-bottom: 1px solid var(--line); }
-    .message { border-radius: 8px; padding: 11px 12px; line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; }
-    .message.user { background: #e9f0e8; border: 1px solid #c6d6c0; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .metric { background: #f0e8da; border: 1px solid #d9cfbe; border-radius: 6px; padding: 9px; }
+    .metric strong { display: block; font-size: 20px; line-height: 1.1; }
+    .list { max-height: 430px; overflow: auto; display: grid; gap: 7px; }
+    .move { padding: 8px; background: #f7f1e7; border: 1px solid #dfd4c2; border-radius: 6px; font-size: 13px; }
+    .log { min-height: 260px; max-height: 520px; overflow: auto; display: grid; align-content: start; gap: 9px; }
+    .message { border-radius: 7px; padding: 10px; line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .message.user { background: #e7f0e8; border: 1px solid #c7d9c7; }
     .message.assistant { background: #181816; color: #f8f3e8; }
-    .message.system { background: #f3ead9; border: 1px solid #d8cfbd; color: #332f2a; font-weight: 750; }
-    .error { color: #9d1c1c; font-weight: 800; }
-    .fen-line { color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; overflow-wrap: anywhere; }
-    @media (max-width: 1120px) {
-      .layout { grid-template-columns: minmax(310px, 1fr) minmax(330px, 1fr); }
-      .chat-panel { grid-column: 1 / -1; }
-    }
-    @media (max-width: 760px) {
-      main { padding: 14px; }
-      header { align-items: start; flex-direction: column; }
-      .status { justify-content: flex-start; }
-      .layout, .row, .command-row { grid-template-columns: 1fr; }
-      h1 { font-size: 26px; }
-      .chat-log { min-height: 300px; max-height: 52vh; }
-    }
+    .message.system { background: #f2eadb; border: 1px solid #dacfbf; }
+    .small { color: var(--muted); font-size: 12px; line-height: 1.35; }
+    .hidden { display: none !important; }
+    @media (max-width: 1080px) { .grid, .two { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 <main>
-  <header>
-    <h1>Chess Assistant</h1>
-    <div class="status" id="status">
-      <span class="chip">white to move</span>
-      <span class="chip">ready</span>
-    </div>
-  </header>
-  <section class="layout">
-    <section class="panel board-panel">
-      <div class="board-shell">
-        <div id="board" class="board" aria-label="Chess board"></div>
-        <div class="command-row">
-          <label>Move
-            <input id="move" placeholder="e2e4 or Nf3" autocomplete="off">
-          </label>
-          <button id="play" type="button">Play</button>
-          <button id="reset" type="button" class="secondary">Reset</button>
+  <nav aria-label="Playgrounds">
+    <button data-page-button="auto" class="active">Auto match</button>
+    <button data-page-button="play">Play Stockfish</button>
+    <button data-page-button="coach">Coach</button>
+    <button data-page-button="image">Image</button>
+    <button data-page-button="review">Review</button>
+    <button data-page-button="crash">Crash lab</button>
+  </nav>
+
+  <section id="page-auto" class="page active">
+    <div class="grid">
+      <div class="panel">
+        <div id="auto-board" class="board" aria-label="Auto match board"></div>
+      </div>
+      <div class="panel">
+        <div class="actions">
+          <button id="auto-start">Start</button>
+          <button id="auto-pause" class="secondary">Pause</button>
+          <button id="auto-reset" class="secondary">Reset</button>
         </div>
-        <div class="fen-line" id="fen-line"></div>
+        <div class="row" style="margin-top: 10px;">
+          <label>Stockfish Elo <input id="auto-elo" type="text" inputmode="numeric" value="2000"></label>
+          <label>Move interval <input id="auto-interval" type="text" inputmode="numeric" value="2000"></label>
+        </div>
+        <div class="metrics" id="auto-metrics" style="margin-top: 10px;"></div>
+        <p class="small" id="auto-summary" style="margin-top: 10px;">Press Start to let the assistant play Stockfish automatically.</p>
       </div>
-    </section>
-    <section class="panel controls">
-      <label>Question
-        <textarea id="question">What should I play and why?</textarea>
-      </label>
-      <div class="row">
-        <label>Image side
-          <select id="side">
-            <option value="w">White</option>
-            <option value="b">Black</option>
-          </select>
-        </label>
-        <label>Castling
-          <input id="castling" value="-">
-        </label>
+      <div class="panel">
+        <div id="auto-moves" class="list"></div>
       </div>
-      <label>Board image
-        <input id="image" type="file" accept="image/*">
-      </label>
-      <div class="command-row">
-        <button id="ask" type="button">Ask</button>
-        <button id="mic" type="button" class="secondary icon" aria-label="Record audio question" title="Record audio question">Mic</button>
-        <button id="clear-image" type="button" class="secondary">Clear image</button>
+    </div>
+  </section>
+
+  <section id="page-play" class="page">
+    <div class="grid">
+      <div class="panel"><div id="play-board" class="board" aria-label="Drag board"></div></div>
+      <div class="panel">
+        <div class="actions">
+          <button id="play-reset" class="secondary">Reset</button>
+          <button id="play-review">Review game</button>
+        </div>
+        <p class="small" style="margin-top: 10px;">Drag a piece to move. Illegal drops are listed as banned moves.</p>
+        <div class="metrics" id="play-metrics" style="margin-top: 10px;"></div>
       </div>
-    </section>
-    <section class="panel chat-panel">
-      <div id="chat-log" class="chat-log">
-        <div class="message system">Ready.</div>
+      <div class="panel"><div id="play-log" class="log"></div></div>
+    </div>
+  </section>
+
+  <section id="page-coach" class="page">
+    <div class="two">
+      <div class="panel">
+        <label>Question <textarea id="coach-question">I am watching this game. What matters now?</textarea></label>
+        <div class="actions" style="margin-top: 10px;">
+          <button id="coach-ask">Ask</button>
+          <button id="coach-mic" class="secondary">Mic</button>
+        </div>
       </div>
-      <div class="chat">
-        <div class="fen-line" id="engine-line"></div>
+      <div class="panel"><div id="coach-log" class="log"></div></div>
+    </div>
+  </section>
+
+  <section id="page-image" class="page">
+    <div class="two">
+      <div class="panel">
+        <label>Board image <input id="image-file" type="file" accept="image/*"></label>
+        <div class="row" style="margin-top: 10px;">
+          <label>Side <select id="image-side"><option value="w">White</option><option value="b">Black</option></select></label>
+          <label>Castling <input id="image-castling" value="-"></label>
+        </div>
+        <label style="margin-top: 10px;">Question <textarea id="image-question">What should I do from this board?</textarea></label>
+        <button id="image-ask" style="margin-top: 10px;">Read image</button>
       </div>
-    </section>
+      <div class="panel"><div id="image-log" class="log"></div></div>
+    </div>
+  </section>
+
+  <section id="page-review" class="page">
+    <div class="two">
+      <div class="panel">
+        <div class="actions">
+          <button id="review-current">Review current game</button>
+          <button id="review-sample" class="secondary">Load sample</button>
+        </div>
+        <div class="metrics" id="review-metrics" style="margin-top: 10px;"></div>
+      </div>
+      <div class="panel"><div id="review-log" class="log"></div></div>
+    </div>
+  </section>
+
+  <section id="page-crash" class="page">
+    <div class="two">
+      <div class="panel">
+        <div class="actions">
+          <button id="crash-bad-fen" class="danger">Bad FEN</button>
+          <button id="crash-illegal" class="danger">Illegal move</button>
+          <button id="crash-recover">Recover</button>
+        </div>
+      </div>
+      <div class="panel"><div id="crash-log" class="log"></div></div>
+    </div>
   </section>
 </main>
+
 <script>
 const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-const PIECES = { p: "♟", r: "♜", n: "♞", b: "♝", q: "♛", k: "♚", P: "♙", R: "♖", N: "♘", B: "♗", Q: "♕", K: "♔" };
-let currentFen = START_FEN;
-let selectedSquare = null;
-let lastMove = [];
-let busy = false;
+const PIECES = { p:"♟", r:"♜", n:"♞", b:"♝", q:"♛", k:"♚", P:"♙", R:"♖", N:"♘", B:"♗", Q:"♕", K:"♔" };
+const files = "abcdefgh";
+const state = {
+  auto: freshGame(),
+  play: freshGame(),
+  lastFen: START_FEN,
+  autoTimer: null,
+  dragFrom: null
+};
 
-const boardEl = document.getElementById("board");
-const moveEl = document.getElementById("move");
-const questionEl = document.getElementById("question");
-const statusEl = document.getElementById("status");
-const fenLineEl = document.getElementById("fen-line");
-const engineLineEl = document.getElementById("engine-line");
-const chatLogEl = document.getElementById("chat-log");
-
-document.getElementById("play").addEventListener("click", playMove);
-document.getElementById("ask").addEventListener("click", askQuestion);
-document.getElementById("reset").addEventListener("click", resetBoard);
-document.getElementById("clear-image").addEventListener("click", () => { document.getElementById("image").value = ""; });
-document.getElementById("mic").addEventListener("click", recordQuestion);
-moveEl.addEventListener("keydown", event => { if (event.key === "Enter") playMove(); });
-
-renderBoard(currentFen);
-updateStatus({ fen: currentFen, turn: "white", status: "active", legal_moves: [] });
-
-async function playMove() {
-  const move = moveEl.value.trim();
-  if (!move || busy) return;
-  setBusy(true);
-  addMessage("user", move);
-  try {
-    const data = await postJson("/api/move", { fen: currentFen, move });
-    currentFen = data.fen;
-    lastMove = [data.played.user_move_uci?.slice(0, 2), data.played.user_move_uci?.slice(2, 4), data.played.assistant_move_uci?.slice(0, 2), data.played.assistant_move_uci?.slice(2, 4)].filter(Boolean);
-    moveEl.value = "";
-    renderBoard(currentFen);
-    updateStatus(data);
-    addMessage("assistant", moveSummary(data));
-    setEngineLine(data);
-  } catch (error) {
-    addMessage("system", error.message, true);
-  } finally {
-    setBusy(false);
-  }
+function freshGame() {
+  return { fen: START_FEN, moves: [], illegal: [], last: [], running: false, review: null };
 }
 
-async function askQuestion() {
-  if (busy) return;
-  setBusy(true);
-  const question = questionEl.value.trim() || "What should I play and why?";
-  addMessage("user", question);
-  try {
-    const file = document.getElementById("image").files[0];
-    const payload = {
-      question,
-      fen: currentFen,
-      side_to_move: document.getElementById("side").value,
-      castling: document.getElementById("castling").value || "-"
-    };
-    if (file) payload.image_base64 = await fileToDataUrl(file);
-    const data = await postJson("/api/ask", payload);
-    currentFen = data.fen;
-    renderBoard(currentFen);
-    updateStatus(data);
-    addMessage("assistant", data.answer);
-    setEngineLine(data);
-  } catch (error) {
-    addMessage("system", error.message, true);
-  } finally {
-    setBusy(false);
-  }
+document.querySelectorAll("[data-page-button]").forEach(button => {
+  button.addEventListener("click", () => showPage(button.dataset.pageButton));
+});
+document.getElementById("auto-start").addEventListener("click", startAuto);
+document.getElementById("auto-pause").addEventListener("click", pauseAuto);
+document.getElementById("auto-reset").addEventListener("click", resetAuto);
+document.getElementById("play-reset").addEventListener("click", resetPlay);
+document.getElementById("play-review").addEventListener("click", () => reviewGame("play"));
+document.getElementById("coach-ask").addEventListener("click", askCoach);
+document.getElementById("coach-mic").addEventListener("click", recordCoach);
+document.getElementById("image-ask").addEventListener("click", askImage);
+document.getElementById("review-current").addEventListener("click", () => reviewGame("auto"));
+document.getElementById("review-sample").addEventListener("click", loadSampleReview);
+document.getElementById("crash-bad-fen").addEventListener("click", crashBadFen);
+document.getElementById("crash-illegal").addEventListener("click", crashIllegal);
+document.getElementById("crash-recover").addEventListener("click", crashRecover);
+
+renderAll();
+
+function showPage(name) {
+  document.querySelectorAll("[data-page-button]").forEach(button => button.classList.toggle("active", button.dataset.pageButton === name));
+  document.querySelectorAll(".page").forEach(page => page.classList.toggle("active", page.id === `page-${name}`));
 }
 
-async function resetBoard() {
-  if (busy) return;
-  setBusy(true);
-  try {
-    const data = await postJson("/api/reset", {});
-    currentFen = data.fen;
-    selectedSquare = null;
-    lastMove = [];
-    moveEl.value = "";
-    renderBoard(currentFen);
-    updateStatus(data);
-    addMessage("system", "Board reset.");
-  } catch (error) {
-    addMessage("system", error.message, true);
-  } finally {
-    setBusy(false);
-  }
+function renderAll() {
+  renderBoard("auto-board", state.auto);
+  renderBoard("play-board", state.play, true);
+  renderMoves("auto-moves", state.auto.moves);
+  renderMetrics("auto-metrics", state.auto.review || liveStats(state.auto));
+  renderMetrics("play-metrics", state.play.review || liveStats(state.play));
 }
 
-function recordQuestion() {
-  const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!Recognition) {
-    addMessage("system", "Audio input is not supported by this browser.", true);
-    return;
-  }
-  const recognition = new Recognition();
-  recognition.lang = "en-US";
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
-  recognition.onresult = event => {
-    questionEl.value = event.results[0][0].transcript;
-    askQuestion();
-  };
-  recognition.onerror = event => addMessage("system", `Audio input failed: ${event.error}`, true);
-  recognition.start();
-}
-
-function renderBoard(fen) {
-  boardEl.innerHTML = "";
-  const rows = fen.split(" ")[0].split("/");
+function renderBoard(id, game, draggable = false) {
+  const el = document.getElementById(id);
+  el.innerHTML = "";
+  const rows = game.fen.split(" ")[0].split("/");
   for (let rank = 8; rank >= 1; rank--) {
     const row = rows[8 - rank];
-    let file = 0;
+    let fileIndex = 0;
     for (const char of row) {
       if (Number.isInteger(Number(char))) {
-        const empties = Number(char);
-        for (let i = 0; i < empties; i++) addSquare(file++, rank, "", "");
+        for (let i = 0; i < Number(char); i++) addSquare(el, game, fileIndex++, rank, "", "", draggable);
       } else {
-        addSquare(file++, rank, PIECES[char] || "", char);
+        addSquare(el, game, fileIndex++, rank, PIECES[char] || "", char, draggable);
       }
     }
   }
 }
 
-function addSquare(file, rank, piece, pieceCode) {
-  const files = "abcdefgh";
-  const square = `${files[file]}${rank}`;
+function addSquare(parent, game, fileIndex, rank, piece, pieceCode, draggable) {
+  const square = `${files[fileIndex]}${rank}`;
   const button = document.createElement("button");
   button.type = "button";
-  button.className = `square ${((file + rank) % 2 === 0) ? "dark" : "light"}`;
-  if (selectedSquare === square) button.classList.add("selected");
-  if (lastMove.includes(square)) button.classList.add("last");
+  button.className = `square ${((fileIndex + rank) % 2 === 0) ? "dark" : "light"}`;
+  if (game.last.includes(square)) button.classList.add("last");
   button.dataset.square = square;
+  button.draggable = draggable && Boolean(piece);
   const pieceColor = pieceCode && pieceCode === pieceCode.toUpperCase() ? "white" : "black";
   button.innerHTML = `<span class="piece ${piece ? pieceColor : ""}">${piece}</span><span class="coord">${square}</span>`;
-  button.addEventListener("click", () => chooseSquare(square));
-  boardEl.appendChild(button);
+  if (draggable) {
+    button.addEventListener("dragstart", event => {
+      state.dragFrom = square;
+      event.dataTransfer.setData("text/plain", square);
+      button.classList.add("dragging");
+    });
+    button.addEventListener("dragend", () => button.classList.remove("dragging"));
+    button.addEventListener("dragover", event => event.preventDefault());
+    button.addEventListener("drop", event => {
+      event.preventDefault();
+      playHumanMove(`${state.dragFrom || event.dataTransfer.getData("text/plain")}${square}`);
+    });
+    button.addEventListener("click", () => clickMove(square));
+  }
+  parent.appendChild(button);
 }
 
-function chooseSquare(square) {
-  if (!selectedSquare) {
-    selectedSquare = square;
-    renderBoard(currentFen);
+function clickMove(square) {
+  if (!state.dragFrom) {
+    state.dragFrom = square;
     return;
   }
-  let move = `${selectedSquare}${square}`;
-  if (needsPromotion(move)) move += "q";
-  selectedSquare = null;
-  moveEl.value = move;
-  renderBoard(currentFen);
-  playMove();
+  const move = maybePromote(`${state.dragFrom}${square}`);
+  state.dragFrom = null;
+  playHumanMove(move);
 }
 
-function needsPromotion(move) {
-  const fromRank = move[1];
-  const toRank = move[3];
-  return (fromRank === "7" && toRank === "8") || (fromRank === "2" && toRank === "1");
+async function playHumanMove(move) {
+  try {
+    const data = await postJson("/api/move", { fen: state.play.fen, move: maybePromote(move) });
+    state.play.fen = data.fen;
+    state.lastFen = data.fen;
+    addPlayedPair(state.play, data);
+    renderAll();
+    addMessage("play-log", "assistant", summarizePair(data));
+  } catch (error) {
+    state.play.illegal.push({ move, reason: error.message });
+    renderMetrics("play-metrics", liveStats(state.play));
+    addMessage("play-log", "system", `Banned: ${move} (${error.message})`);
+  }
 }
 
-function moveSummary(data) {
-  const played = data.played || {};
-  const assistantMove = played.assistant_move_san ? ` I replied ${played.assistant_move_san}.` : "";
-  return `You played ${played.user_move_san}.${assistantMove}\n\n${data.answer}`;
+function maybePromote(move) {
+  if (!move || move.length !== 4) return move;
+  return ((move[1] === "7" && move[3] === "8") || (move[1] === "2" && move[3] === "1")) ? `${move}q` : move;
 }
 
-function updateStatus(data) {
-  const best = data.engine?.best_move_san || data.engine?.best_move_uci || "ready";
-  statusEl.innerHTML = [
-    `${data.turn || "white"} to move`,
-    data.status || "active",
-    `best ${best}`
-  ].map(text => `<span class="chip">${escapeHtml(text)}</span>`).join("");
-  fenLineEl.textContent = data.fen || currentFen;
+async function startAuto() {
+  if (state.auto.running) return;
+  state.auto.running = true;
+  await autoStep();
 }
 
-function setEngineLine(data) {
-  const engine = data.engine || {};
-  const pv = (engine.principal_variation || []).join(" ");
-  engineLineEl.textContent = `Engine: ${engine.engine_name || "ready"} | score: ${engine.score_cp ?? "n/a"} | pv: ${pv}`;
+function pauseAuto() {
+  state.auto.running = false;
+  if (state.autoTimer) clearTimeout(state.autoTimer);
+  state.autoTimer = null;
+}
+
+function resetAuto() {
+  pauseAuto();
+  state.auto = freshGame();
+  renderAll();
+  document.getElementById("auto-summary").textContent = "Ready.";
+}
+
+function resetPlay() {
+  state.play = freshGame();
+  state.lastFen = START_FEN;
+  document.getElementById("play-log").innerHTML = "";
+  renderAll();
+}
+
+async function autoStep() {
+  if (!state.auto.running) return;
+  const turn = state.auto.fen.split(" ")[1];
+  const actor = turn === "w" ? "assistant" : "stockfish";
+  const data = await postJson("/api/engine-step", { fen: state.auto.fen, actor, opponent_elo: Number(document.getElementById("auto-elo").value || 2000) });
+  if (data.played) {
+    state.auto.fen = data.fen;
+    state.lastFen = data.fen;
+    state.auto.moves.push(data.played);
+    state.auto.last = [data.played.move_uci.slice(0, 2), data.played.move_uci.slice(2, 4)];
+  }
+  renderAll();
+  if (data.game_over || state.auto.moves.length >= 160) {
+    state.auto.running = false;
+    await reviewGame("auto");
+    return;
+  }
+  state.autoTimer = setTimeout(autoStep, Number(document.getElementById("auto-interval").value || 2000));
+}
+
+async function reviewGame(kind) {
+  const game = state[kind];
+  const review = await postJson("/api/review-game", {
+    moves: game.moves,
+    illegal_attempts: game.illegal,
+    opponent_elo: Number(document.getElementById("auto-elo").value || 2000),
+    assistant_color: kind === "play" ? "black" : "white"
+  });
+  game.review = review;
+  renderMetrics(kind === "auto" ? "auto-metrics" : "play-metrics", review);
+  if (kind === "auto") document.getElementById("auto-summary").textContent = review.summary;
+  renderReview(review);
+}
+
+async function askCoach() {
+  const question = document.getElementById("coach-question").value || "What matters now?";
+  addMessage("coach-log", "user", question);
+  const data = await postJson("/api/ask", { fen: state.lastFen, question });
+  addMessage("coach-log", "assistant", data.answer);
+}
+
+function recordCoach() {
+  const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!Recognition) {
+    addMessage("coach-log", "system", "Audio input is not supported by this browser.");
+    return;
+  }
+  const recognition = new Recognition();
+  recognition.lang = "en-US";
+  recognition.onresult = event => {
+    document.getElementById("coach-question").value = event.results[0][0].transcript;
+    askCoach();
+  };
+  recognition.onerror = event => addMessage("coach-log", "system", `Audio failed: ${event.error}`);
+  recognition.start();
+}
+
+async function askImage() {
+  const file = document.getElementById("image-file").files[0];
+  if (!file) {
+    addMessage("image-log", "system", "Choose an image first.");
+    return;
+  }
+  const data = await postJson("/api/ask", {
+    question: document.getElementById("image-question").value || "What should I do?",
+    image_base64: await fileToDataUrl(file),
+    side_to_move: document.getElementById("image-side").value,
+    castling: document.getElementById("image-castling").value || "-"
+  });
+  state.lastFen = data.fen;
+  addMessage("image-log", "assistant", data.answer);
+}
+
+async function crashBadFen() {
+  try {
+    await postJson("/api/ask", { fen: "bad fen", question: "Crash?" });
+  } catch (error) {
+    addMessage("crash-log", "system", `Handled bad FEN: ${error.message}`);
+  }
+}
+
+async function crashIllegal() {
+  try {
+    await postJson("/api/move", { fen: START_FEN, move: "e2e5" });
+  } catch (error) {
+    addMessage("crash-log", "system", `Handled illegal move: ${error.message}`);
+  }
+}
+
+function crashRecover() {
+  state.lastFen = START_FEN;
+  addMessage("crash-log", "assistant", "Recovered. The app is still responsive.");
+}
+
+function loadSampleReview() {
+  const review = {
+    result: "sample",
+    plies: state.auto.moves.length,
+    captures: liveStats(state.auto).captures,
+    checks: liveStats(state.auto).checks,
+    illegal_attempt_count: state.auto.illegal.length,
+    estimated_rating: Number(document.getElementById("auto-elo").value || 2000),
+    summary: "Sample review loaded from the current auto-match moves.",
+    moves: state.auto.moves,
+    banned_moves: state.auto.illegal
+  };
+  renderReview(review);
+}
+
+function addPlayedPair(game, data) {
+  game.moves.push({ actor: "friend", move_san: data.played.user_move_san, move_uci: data.played.user_move_uci, score_cp: null });
+  if (data.played.assistant_move_uci) {
+    game.moves.push({ actor: "assistant", move_san: data.played.assistant_move_san, move_uci: data.played.assistant_move_uci, score_cp: data.engine?.score_cp ?? null });
+    game.last = [data.played.assistant_move_uci.slice(0, 2), data.played.assistant_move_uci.slice(2, 4)];
+  } else {
+    game.last = [data.played.user_move_uci.slice(0, 2), data.played.user_move_uci.slice(2, 4)];
+  }
+}
+
+function summarizePair(data) {
+  const reply = data.played.assistant_move_san ? ` I played ${data.played.assistant_move_san}.` : "";
+  return `You played ${data.played.user_move_san}.${reply}\n${data.answer}`;
+}
+
+function renderMoves(id, moves) {
+  const el = document.getElementById(id);
+  el.innerHTML = moves.map((move, index) => `<div class="move">${index + 1}. ${escapeHtml(move.actor)} ${escapeHtml(move.move_san)} <span class="small">${escapeHtml(move.move_uci)}</span></div>`).join("");
+}
+
+function liveStats(game) {
+  return {
+    result: game.moves.length ? "playing" : "ready",
+    plies: game.moves.length,
+    captures: game.moves.filter(move => String(move.move_san).includes("x")).length,
+    checks: game.moves.filter(move => String(move.move_san).includes("+") || String(move.move_san).includes("#")).length,
+    illegal_attempt_count: game.illegal.length,
+    estimated_rating: Number(document.getElementById("auto-elo")?.value || 2000),
+    summary: ""
+  };
+}
+
+function renderMetrics(id, data) {
+  const el = document.getElementById(id);
+  el.innerHTML = [
+    ["Result", data.result || "ready"],
+    ["Plies", data.plies ?? 0],
+    ["Banned", data.illegal_attempt_count ?? 0],
+    ["Rating", data.estimated_rating || "-"]
+  ].map(([label, value]) => `<div class="metric"><span class="small">${label}</span><strong>${value}</strong></div>`).join("");
+}
+
+function renderReview(review) {
+  renderMetrics("review-metrics", review);
+  const banned = (review.banned_moves || []).map(item => `${item.move}: ${item.reason}`).join("\\n") || "None";
+  const moves = (review.moves || []).map(move => `${move.ply || ""}. ${move.actor} ${move.move_san}`).join("\\n");
+  document.getElementById("review-log").innerHTML = "";
+  addMessage("review-log", "assistant", `${review.summary}\\n\\nMoves\\n${moves}\\n\\nBanned moves\\n${banned}`);
+}
+
+function addMessage(id, role, text) {
+  const div = document.createElement("div");
+  div.className = `message ${role}`;
+  div.textContent = text;
+  document.getElementById(id).appendChild(div);
+  document.getElementById(id).scrollTop = document.getElementById(id).scrollHeight;
 }
 
 async function postJson(url, payload) {
@@ -498,15 +795,6 @@ async function postJson(url, payload) {
   return data;
 }
 
-function addMessage(role, text, isError = false) {
-  const div = document.createElement("div");
-  div.className = `message ${role}`;
-  if (isError) div.classList.add("error");
-  div.textContent = text;
-  chatLogEl.appendChild(div);
-  chatLogEl.scrollTop = chatLogEl.scrollHeight;
-}
-
 function fileToDataUrl(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -514,11 +802,6 @@ function fileToDataUrl(file) {
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
-}
-
-function setBusy(value) {
-  busy = value;
-  for (const button of document.querySelectorAll("button")) button.disabled = value;
 }
 
 function escapeHtml(value) {
